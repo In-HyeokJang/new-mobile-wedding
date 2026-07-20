@@ -19,8 +19,31 @@ export type IntroData = {
   mainPhoto: string; // 예: "/images/main.jpg"
 };
 
+// 혼주(양가 부모) 한 줄. 부모 성함 + "의 아들/딸 신랑/신부명".
+export type ParentLine = {
+  fatherName?: string;
+  motherName?: string;
+  childRelation: string; // "아들" | "딸"
+  childName: string;
+};
+
+export type InvitationData = {
+  greeting: string[]; // 인사말 문단(줄 단위)
+  groom: ParentLine;
+  bride: ParentLine;
+};
+
+export type CalendarData = {
+  year: number;
+  month: number; // 1-12
+  day: number;
+  timeText: string; // 예: "오후 1시 30분"
+};
+
 export type InvitationConfig = {
   theme: Theme;
   intro: IntroData;
-  // Phase 2+ 에서 invitation, calendar, gallery ... 확장 예정
+  invitation: InvitationData;
+  calendar: CalendarData;
+  // Phase 3+ 에서 gallery, ourStory, location ... 확장 예정
 };
