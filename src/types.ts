@@ -65,6 +65,14 @@ export type GuestbookEntry = {
 };
 export type GuestbookInput = { name: string; pin: string; message: string };
 
+// 공유(카톡/OG). 링크 미리보기 썸네일·제목·설명.
+export type ShareData = {
+  title: string;
+  description: string;
+  ogImage: string; // 예: "/og-image.jpg"
+  siteUrl: string; // 배포 도메인 (OG 절대경로 기준)
+};
+
 export type InvitationConfig = {
   theme: Theme;
   intro: IntroData;
@@ -72,5 +80,6 @@ export type InvitationConfig = {
   calendar: CalendarData;
   gallery: GalleryData;
   ourStory: OurStoryData;
-  // Phase 5+ 에서 location, account, share ... 확장 예정
+  share: ShareData;
+  // Phase 5+ 에서 location, account ... 확장 예정
 };

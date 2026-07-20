@@ -55,4 +55,10 @@ export const config: InvitationConfig = {
       { q: "프러포즈는 어땠나요?", a: "둘이 처음 걸었던 그 거리에서, 조용히 반지를 건넸어요." },
     ],
   },
+  share: {
+    title: "인혁 ♥ ○○ 결혼합니다", // TODO: 신부 이름
+    description: "2026년 12월 13일 일요일 오후 1시 30분 · ○○웨딩홀", // TODO: 예식장
+    ogImage: "/og-image.jpg",
+    siteUrl: "https://jihpjemobilewedding.vercel.app",
+  },
 };
