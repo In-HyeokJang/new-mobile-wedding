@@ -1,26 +1,25 @@
 @import "tailwindcss";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 디자인 토큰 (Claude 베이스 각색) — 단일 출처.
+   여기 선언한 --color-* 를 Tailwind가 bg-*/text-*/border-* 유틸로 만들어줌. */
+@theme {
+  --color-canvas: #faf9f5;
+  --color-ink: #141413;
+  --color-body: #3d3d3a;
+  --color-muted: #6c6a64;
+  --color-hairline: #e6dfd8;
+  --color-accent: #ff630f;
+
+  --font-display: var(--font-fraunces), serif; /* 라틴 우아 세리프 (Aujournuit 대체) */
+  --font-body: "Pretendard", sans-serif;        /* 한글 본문 */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-body);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
