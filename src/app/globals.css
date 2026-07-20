@@ -1,8 +1,8 @@
 @import "tailwindcss";
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
 
 /* 디자인 토큰 (Claude 베이스 각색) — 단일 출처.
-   여기 선언한 --color-* 를 Tailwind가 bg-*/text-*/border-* 유틸로 만들어줌. */
+   선언한 색 토큰을 Tailwind가 bg / text / border 유틸리티로 생성한다.
+   (Pretendard 폰트는 layout.tsx 의 link 로 로드) */
 @theme {
   --color-canvas: #faf9f5;
   --color-ink: #141413;
@@ -11,8 +11,8 @@
   --color-hairline: #e6dfd8;
   --color-accent: #ff630f;
 
-  --font-display: var(--font-fraunces), serif; /* 라틴 우아 세리프 (Aujournuit 대체) */
-  --font-body: "Pretendard", sans-serif;        /* 한글 본문 */
+  --font-display: var(--font-fraunces), serif;
+  --font-body: "Pretendard", sans-serif;
 }
 
 html,

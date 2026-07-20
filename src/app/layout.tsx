@@ -22,6 +22,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko" className={`${fraunces.variable} h-full antialiased`}>
+      <head>
+        {/* 한글 본문 폰트 Pretendard (React가 head로 hoist) */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        />
+      </head>
       <body className="min-h-full">{children}</body>
     </html>
   );
