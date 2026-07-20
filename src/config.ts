@@ -35,4 +35,24 @@ export const config: InvitationConfig = {
     day: 13,
     timeText: "오후 1시 30분",
   },
+  gallery: {
+    // TODO: 실제 사진으로 교체 (public/images/gallery-*.jpg)
+    photos: [
+      "/images/gallery-1.jpg",
+      "/images/gallery-2.jpg",
+      "/images/gallery-3.jpg",
+      "/images/gallery-4.jpg",
+      "/images/gallery-5.jpg",
+      "/images/gallery-6.jpg",
+    ],
+  },
+  ourStory: {
+    title: "우리 두 사람의 이야기",
+    // TODO: 실제 인터뷰 내용으로 교체
+    qa: [
+      { q: "처음 만난 순간은?", a: "친구 소개로 만나 첫 대화부터 밤새 이야기를 나눴어요." },
+      { q: "서로의 첫인상은?", a: "따뜻하게 웃는 모습이 오래 기억에 남았습니다." },
+      { q: "프러포즈는 어땠나요?", a: "둘이 처음 걸었던 그 거리에서, 조용히 반지를 건넸어요." },
+    ],
+  },
 };

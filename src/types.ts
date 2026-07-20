@@ -40,10 +40,17 @@ export type CalendarData = {
   timeText: string; // 예: "오후 1시 30분"
 };
 
+export type GalleryData = { photos: string[] };
+
+export type QA = { q: string; a: string };
+export type OurStoryData = { title?: string; qa: QA[] };
+
 export type InvitationConfig = {
   theme: Theme;
   intro: IntroData;
   invitation: InvitationData;
   calendar: CalendarData;
-  // Phase 3+ 에서 gallery, ourStory, location ... 확장 예정
+  gallery: GalleryData;
+  ourStory: OurStoryData;
+  // Phase 4+ 에서 location, account, rsvp ... 확장 예정
 };
