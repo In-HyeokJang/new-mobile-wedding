@@ -23,6 +23,8 @@ export default function Guestbook() {
   }, []);
 
   useEffect(() => {
+    // 마운트 시 방명록 목록 fetch(외부 데이터 동기화) — 의도된 패턴.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
   }, [load]);
 

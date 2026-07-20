@@ -23,6 +23,8 @@ export default function Calendar({
     const diff = Math.ceil(
       (target.getTime() - today.getTime()) / 86_400_000
     );
+    // 오늘 기준 D-day는 브라우저에서만 계산(하이드레이션 안전). 마운트 후 1회 setState — 의도된 패턴.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDday(diff);
   }, [data.year, data.month, data.day]);
 
