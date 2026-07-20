@@ -45,6 +45,26 @@ export type GalleryData = { photos: string[] };
 export type QA = { q: string; a: string };
 export type OurStoryData = { title?: string; qa: QA[] };
 
+// RSVP 폼 입력 (클라이언트 → API)
+export type RsvpInput = {
+  side: "신랑측" | "신부측";
+  name: string;
+  attend: boolean;
+  guestCount: number;
+  meal: boolean;
+  phone?: string;
+  message?: string;
+};
+
+// 방명록
+export type GuestbookEntry = {
+  id: number;
+  name: string;
+  message: string;
+  created_at: string;
+};
+export type GuestbookInput = { name: string; pin: string; message: string };
+
 export type InvitationConfig = {
   theme: Theme;
   intro: IntroData;
@@ -52,5 +72,5 @@ export type InvitationConfig = {
   calendar: CalendarData;
   gallery: GalleryData;
   ourStory: OurStoryData;
-  // Phase 4+ 에서 location, account, rsvp ... 확장 예정
+  // Phase 5+ 에서 location, account, share ... 확장 예정
 };
