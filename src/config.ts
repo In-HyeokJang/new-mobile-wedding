@@ -61,4 +61,7 @@ export const config: InvitationConfig = {
     ogImage: "/og-image.jpg",
     siteUrl: "https://jihpjemobilewedding.vercel.app",
   },
+  bgm: {
+    src: "/music/bgm.mp3", // TODO: 저작권 프리 연주곡 파일 넣기
+  },
 };

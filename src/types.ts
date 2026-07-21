@@ -73,6 +73,11 @@ export type ShareData = {
   siteUrl: string; // 배포 도메인 (OG 절대경로 기준)
 };
 
+// 배경음악
+export type BgmData = {
+  src: string; // 예: "/music/bgm.mp3"
+};
+
 export type InvitationConfig = {
   theme: Theme;
   intro: IntroData;
@@ -81,5 +86,6 @@ export type InvitationConfig = {
   gallery: GalleryData;
   ourStory: OurStoryData;
   share: ShareData;
+  bgm: BgmData;
   // Phase 5+ 에서 location, account ... 확장 예정
 };
