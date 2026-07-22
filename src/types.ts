@@ -37,6 +37,8 @@ export type CalendarData = {
   year: number;
   month: number; // 1-12
   day: number;
+  hour: number; // 0-23, 예식 정확한 시각 (실시간 카운트다운 계산용)
+  minute: number; // 0-59
   timeText: string; // 예: "오후 1시 30분"
 };
 

@@ -33,6 +33,8 @@ export const config: InvitationConfig = {
     year: 2026,
     month: 12,
     day: 13,
+    hour: 13,
+    minute: 30,
     timeText: "오후 1시 30분",
   },
   gallery: {
