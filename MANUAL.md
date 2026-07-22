@@ -42,7 +42,7 @@
 | `public/images/main.jpg` | 첫 화면 메인 사진 | 세로 사진 |
 | `public/images/gallery-1~6.jpg` | 갤러리 | 정사각형/세로 |
 | `public/og-image.jpg` | 카톡 공유 썸네일 | 1200×630 가로 |
-| `public/music/bgm.mp3` | 배경음악 | mp3 |
+| `public/music/bgm.mp3` | 배경음악 | mp3 · [작곡/구하기 가이드](docs/bgm-guide.md) |
 
 > 사진은 코드가 자동으로 흑백(`grayscale`) 처리함. 컬러 원본 그대로 올리면 됨.
 
@@ -64,7 +64,7 @@
 - [ ] 메인 사진 `public/images/main.jpg` (지금 임시 플레이스홀더)
 - [ ] 갤러리 사진 `public/images/gallery-1~6.jpg` (지금 숫자 플레이스홀더)
 - [ ] OG 공유 이미지 `public/og-image.jpg` (지금 임시 디자인)
-- [ ] 배경음악 `public/music/bgm.mp3`
+- [ ] 배경음악 `public/music/bgm.mp3` → 만드는 법: [docs/bgm-guide.md](docs/bgm-guide.md)
 
 ---
 
