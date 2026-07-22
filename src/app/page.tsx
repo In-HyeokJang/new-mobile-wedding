@@ -3,7 +3,6 @@ import Invitation from "@/components/Invitation";
 import Calendar from "@/components/Calendar";
 import Gallery from "@/components/Gallery";
 import OurStory from "@/components/OurStory";
-import RSVP from "@/components/RSVP";
 import Guestbook from "@/components/Guestbook";
 import BgmToggle from "@/components/BgmToggle";
 import { config } from "@/config";
@@ -17,7 +16,6 @@ export default function Home() {
       <Calendar data={config.calendar} theme={config.theme} />
       <Gallery data={config.gallery} />
       <OurStory data={config.ourStory} />
-      <RSVP />
       <Guestbook />
       <BgmToggle data={config.bgm} theme={config.theme} />
     </main>
