@@ -69,11 +69,23 @@ export default function Guestbook() {
     else window.alert((await res.json()).error ?? "삭제 실패");
   }
 
+  const PAGE_WINDOW = 5;
   const totalPages = Math.max(1, Math.ceil(entries.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const pageEntries = entries.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
+  );
+  const windowStart = Math.max(
+    1,
+    Math.min(
+      currentPage - Math.floor((PAGE_WINDOW - 1) / 2),
+      totalPages - PAGE_WINDOW + 1
+    )
+  );
+  const pageWindow = Array.from(
+    { length: Math.min(PAGE_WINDOW, totalPages) },
+    (_, i) => windowStart + i
   );
 
   const inputBase =
@@ -144,22 +156,32 @@ export default function Guestbook() {
         </ul>
 
         {entries.length > PAGE_SIZE && (
-          <div className="mt-6 flex items-center justify-center gap-4 font-body text-sm">
+          <div className="mt-6 flex items-center justify-center gap-1.5 font-body text-sm">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="text-muted disabled:opacity-30"
+              className="px-1.5 text-muted disabled:opacity-30"
               aria-label="이전 페이지"
             >
               이전
             </button>
-            <span className="text-muted">
-              {currentPage} / {totalPages}
-            </span>
+            {pageWindow.map((n) => (
+              <button
+                key={n}
+                onClick={() => setPage(n)}
+                aria-label={`${n} 페이지`}
+                aria-current={n === currentPage ? "page" : undefined}
+                className={`flex h-7 w-7 items-center justify-center rounded-full ${
+                  n === currentPage ? "bg-accent text-white" : "text-muted"
+                }`}
+              >
+                {n}
+              </button>
+            ))}
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="text-muted disabled:opacity-30"
+              className="px-1.5 text-muted disabled:opacity-30"
               aria-label="다음 페이지"
             >
               다음
