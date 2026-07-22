@@ -14,7 +14,7 @@ export const config: InvitationConfig = {
   intro: {
     groomName: "장인혁",
     brideName: "박재은", // TODO: 신부 이름
-    dateText: "2026. 12. 13. SUN 1:30 PM",
+    dateText: "2026. 12. 13 일요일 1:30 PM",
     placeText: "더뉴컨벤션 웨딩홀 제니스홀 5층",
     mainPhoto: "/images/main.jpg", // TODO: 실제 메인 사진으로 교체
   },
@@ -27,7 +27,7 @@ export const config: InvitationConfig = {
     ],
     // TODO: 실제 양가 부모님 성함/신부 이름
     groom: { fatherName: "장면섭", motherName: "김선숙", childRelation: "아들", childName: "장인혁" },
-    bride: { fatherName: "박민규", motherName: "정정아", childRelation: "딸", childName: "○○○" },
+    bride: { fatherName: "박민규", motherName: "정정아", childRelation: "딸", childName: "박재은" },
   },
   calendar: {
     year: 2026,
