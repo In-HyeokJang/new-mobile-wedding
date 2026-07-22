@@ -5,7 +5,7 @@ import Image from "next/image";
 import Section from "./Section";
 import type { GalleryData } from "@/types";
 
-// 흑백 사진 그리드 + 탭하면 전체화면 라이트박스(좌우 이동/스와이프).
+// 사진 그리드 + 탭하면 전체화면 라이트박스(좌우 이동/스와이프).
 export default function Gallery({ data }: { data: GalleryData }) {
   const photos = data.photos;
   const [open, setOpen] = useState<number | null>(null); // 열린 사진 인덱스 (null=닫힘)
@@ -64,7 +64,7 @@ export default function Gallery({ data }: { data: GalleryData }) {
               alt={`gallery ${i + 1}`}
               fill
               sizes="33vw"
-              className="object-cover grayscale transition-transform duration-300 hover:scale-105"
+              className="object-cover transition-transform duration-300 hover:scale-105"
             />
           </button>
         ))}
@@ -92,7 +92,7 @@ export default function Gallery({ data }: { data: GalleryData }) {
               alt={`gallery ${open + 1}`}
               fill
               sizes="100vw"
-              className="object-contain grayscale"
+              className="object-contain"
             />
           </div>
 

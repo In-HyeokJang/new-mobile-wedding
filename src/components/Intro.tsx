@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { IntroData, Theme } from "@/types";
 
-// 첫 화면: 흑백 풀블리드 사진 + 하단 정렬 텍스트.
+// 첫 화면: 풀블리드 사진 + 하단 정렬 텍스트.
 // 서버 컴포넌트(상호작용 없음). config 대신 props 주입 → 빌더 재사용 대비.
 export default function Intro({ data, theme }: { data: IntroData; theme: Theme }) {
   return (
@@ -12,7 +12,7 @@ export default function Intro({ data, theme }: { data: IntroData; theme: Theme }
         fill
         priority
         sizes="100vw"
-        className="object-cover grayscale"
+        className="object-cover"
       />
 
       {/* 하단 가독성 그라디언트 */}
