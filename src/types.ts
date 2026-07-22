@@ -44,6 +44,13 @@ export type CalendarData = {
 
 export type GalleryData = { photos: string[] };
 
+// 오시는 길 (카카오맵). 좌표는 address를 카카오 Geocoder로 변환해 얻으므로 별도 저장 불필요.
+export type LocationData = {
+  name: string; // 건물명 (지도 검색/마커 기준)
+  hallText: string; // 홀 상세 (예: "제니스홀 5층")
+  address: string; // 도로명 주소 (지오코딩 + 표시 + 복사용)
+};
+
 export type QA = { q: string; a: string };
 export type OurStoryData = { title?: string; qa: QA[] };
 
@@ -74,9 +81,9 @@ export type InvitationConfig = {
   intro: IntroData;
   invitation: InvitationData;
   calendar: CalendarData;
+  location: LocationData;
   gallery: GalleryData;
   ourStory: OurStoryData;
   share: ShareData;
   bgm: BgmData;
-  // Phase 5+ 에서 location, account ... 확장 예정
 };

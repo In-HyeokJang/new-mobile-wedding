@@ -13,9 +13,9 @@ export const config: InvitationConfig = {
   },
   intro: {
     groomName: "장인혁",
-    brideName: "○○○", // TODO: 신부 이름
+    brideName: "박재은", // TODO: 신부 이름
     dateText: "2026. 12. 13. SUN 1:30 PM",
-    placeText: "○○웨딩홀 그랜드홀", // TODO: 예식장/홀
+    placeText: "더뉴컨벤션 웨딩홀 제니스홀 5층",
     mainPhoto: "/images/main.jpg", // TODO: 실제 메인 사진으로 교체
   },
   invitation: {
@@ -26,8 +26,8 @@ export const config: InvitationConfig = {
       "저희 두 사람의 시작을 축복해 주세요.",
     ],
     // TODO: 실제 양가 부모님 성함/신부 이름
-    groom: { fatherName: "장○○", motherName: "○○○", childRelation: "아들", childName: "장인혁" },
-    bride: { fatherName: "○○○", motherName: "○○○", childRelation: "딸", childName: "○○○" },
+    groom: { fatherName: "장면섭", motherName: "김선숙", childRelation: "아들", childName: "장인혁" },
+    bride: { fatherName: "박민규", motherName: "정정아", childRelation: "딸", childName: "○○○" },
   },
   calendar: {
     year: 2026,
@@ -36,6 +36,11 @@ export const config: InvitationConfig = {
     hour: 13,
     minute: 30,
     timeText: "오후 1시 30분",
+  },
+  location: {
+    name: "더뉴컨벤션 웨딩홀",
+    hallText: "제니스홀 5층",
+    address: "서울특별시 강서구 공항대로36길 57",
   },
   gallery: {
     // TODO: 실제 사진으로 교체 (public/images/gallery-*.jpg)
@@ -52,14 +57,14 @@ export const config: InvitationConfig = {
     title: "우리 두 사람의 이야기",
     // TODO: 실제 인터뷰 내용으로 교체
     qa: [
-      { q: "처음 만난 순간은?", a: "친구 소개로 만나 첫 대화부터 밤새 이야기를 나눴어요." },
-      { q: "서로의 첫인상은?", a: "따뜻하게 웃는 모습이 오래 기억에 남았습니다." },
-      { q: "프러포즈는 어땠나요?", a: "둘이 처음 걸었던 그 거리에서, 조용히 반지를 건넸어요." },
+      { q: "처음 만난 순간은?", a: "친구 소개로 만나 첫 대화부터 잘 통했어요." },
+      { q: "서로의 첫인상은?", a: "멀리서 봐도 이쁘고 아름다운 여자가 첫눈에 들어왔어요." },
+      { q: "프러포즈는 어땠나요?", a: "아직 고민중~" },
     ],
   },
   share: {
-    title: "인혁 ♥ ○○ 결혼합니다", // TODO: 신부 이름
-    description: "2026년 12월 13일 일요일 오후 1시 30분 · ○○웨딩홀", // TODO: 예식장
+    title: "인혁 ♥ 재은 결혼합니다", // TODO: 신부 이름
+    description: "2026년 12월 13일 일요일 오후 1시 30분 · 더뉴컨벤션 웨딩홀",
     ogImage: "/og-image.jpg",
     siteUrl: "https://jihpjemobilewedding.vercel.app",
   },
