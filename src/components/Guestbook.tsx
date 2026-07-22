@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import Section from "./Section";
 import type { GuestbookEntry } from "@/types";
 
+const PAGE_SIZE = 5;
+
 export default function Guestbook() {
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [name, setName] = useState("");
@@ -11,6 +13,7 @@ export default function Guestbook() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "sending">("idle");
   const [err, setErr] = useState("");
+  const [page, setPage] = useState(1);
 
   const load = useCallback(async () => {
     try {
@@ -46,6 +49,7 @@ export default function Guestbook() {
       setMessage("");
       setPin("");
       await load();
+      setPage(1); // 새 글은 최신순 1페이지에 보이니 첫 페이지로 이동
     } catch (e2) {
       setErr(e2 instanceof Error ? e2.message : "작성에 실패했습니다.");
     } finally {
@@ -64,6 +68,13 @@ export default function Guestbook() {
     if (res.ok) await load();
     else window.alert((await res.json()).error ?? "삭제 실패");
   }
+
+  const totalPages = Math.max(1, Math.ceil(entries.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pageEntries = entries.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
 
   const inputBase =
     "rounded-md border border-hairline bg-white px-3 py-2 font-body text-body focus:border-accent focus:outline-none";
@@ -106,7 +117,7 @@ export default function Guestbook() {
         </form>
 
         <ul className="mt-8 space-y-4">
-          {entries.map((e) => (
+          {pageEntries.map((e) => (
             <li key={e.id} className="border-b border-hairline pb-4 last:border-0">
               <div className="flex items-center justify-between">
                 <span className="font-body text-sm font-semibold text-ink">
@@ -131,6 +142,30 @@ export default function Guestbook() {
             </li>
           )}
         </ul>
+
+        {entries.length > PAGE_SIZE && (
+          <div className="mt-6 flex items-center justify-center gap-4 font-body text-sm">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="text-muted disabled:opacity-30"
+              aria-label="이전 페이지"
+            >
+              이전
+            </button>
+            <span className="text-muted">
+              {currentPage} / {totalPages}
+            </span>
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="text-muted disabled:opacity-30"
+              aria-label="다음 페이지"
+            >
+              다음
+            </button>
+          </div>
+        )}
       </div>
     </Section>
   );

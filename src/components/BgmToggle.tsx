@@ -29,11 +29,13 @@ export default function BgmToggle({
     }
   }
 
-  // 첫 화면 탭 시 한 번 자동 재생 시도(음소거 아님이라 사용자 제스처 필요).
+  // 첫 화면 탭 시 딱 한 번만 자동 재생 시도(음소거 아님이라 사용자 제스처 필요).
+  // 마운트 시 한 번만 등록 — playing에 의존하면 끌 때마다 리스너가 재등록되어
+  // 이후 아무 곳이나 탭해도 음악이 다시 켜지는 버그가 생김.
   useEffect(() => {
     function tryPlayOnce() {
       const audio = audioRef.current;
-      if (!audio || playing) return;
+      if (!audio) return;
       audio
         .play()
         .then(() => setPlaying(true))
@@ -41,7 +43,7 @@ export default function BgmToggle({
     }
     window.addEventListener("pointerdown", tryPlayOnce, { once: true });
     return () => window.removeEventListener("pointerdown", tryPlayOnce);
-  }, [playing]);
+  }, []);
 
   return (
     <>
