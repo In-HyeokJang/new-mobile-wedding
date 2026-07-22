@@ -11,7 +11,10 @@ export default function Gallery({ data }: { data: GalleryData }) {
   const [open, setOpen] = useState<number | null>(null); // 열린 사진 인덱스 (null=닫힘)
   const [touchX, setTouchX] = useState<number | null>(null);
 
-  const close = useCallback(() => setOpen(null), []);
+  // 닫을 때는 직접 null을 넣지 않고 history.back()으로 되돌린다 — 열 때 쌓아둔
+  // 히스토리를 여기서 되돌려 소비해야, 폰 "뒤로가기"로 닫았을 때와 동작이
+  // 같아지고 히스토리에 유령 항목이 남지 않는다.
+  const close = useCallback(() => window.history.back(), []);
   const prev = useCallback(
     () =>
       setOpen((i) => (i === null ? i : (i - 1 + photos.length) % photos.length)),
@@ -22,21 +25,29 @@ export default function Gallery({ data }: { data: GalleryData }) {
     [photos.length]
   );
 
-  // 라이트박스 열렸을 때: 스크롤 잠금 + 키보드 조작. 닫히면 정리.
+  const isOpen = open !== null;
+
+  // 라이트박스 열렸을 때: 스크롤 잠금 + 키보드 조작 + 히스토리 항목 추가.
+  // isOpen(불리언)에만 의존 — open(사진 인덱스)에 의존하면 사진 넘길 때마다
+  // 히스토리가 계속 쌓여 뒤로가기를 여러 번 눌러야 하는 문제가 생긴다.
   useEffect(() => {
-    if (open === null) return;
+    if (!isOpen) return;
     document.body.style.overflow = "hidden";
+    window.history.pushState({ lightbox: true }, "");
+    const onPopState = () => setOpen(null);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
     };
+    window.addEventListener("popstate", onPopState);
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("popstate", onPopState);
       window.removeEventListener("keydown", onKey);
     };
-  }, [open, close, prev, next]);
+  }, [isOpen, close, prev, next]);
 
   return (
     <Section eyebrow="Gallery" className="bg-canvas">
