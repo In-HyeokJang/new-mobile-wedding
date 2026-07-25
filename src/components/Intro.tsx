@@ -23,12 +23,10 @@ export default function Intro({ data, theme }: { data: IntroData; theme: Theme }
         <p className="font-body text-xs uppercase tracking-[0.35em] opacity-85">
           We&apos;re getting married
         </p>
-        <h1 className="mt-4 font-display text-5xl leading-tight">
-          <span>{data.groomName}</span>
-          <span className="mx-3" style={{ color: theme.accent }}>
-            &amp;
-          </span>
-          <span>{data.brideName}</span>
+        <h1 className="mt-4 font-display text-3xl min-[380px]:text-4xl sm:text-5xl leading-tight tracking-tight break-keep flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1">
+          <span className="whitespace-nowrap">{data.groomName}</span>
+          <span style={{ color: theme.accent }}>&amp;</span>
+          <span className="whitespace-nowrap">{data.brideName}</span>
         </h1>
         <p className="mt-5 font-body text-base opacity-90">{data.dateText}</p>
         <p className="font-body text-sm opacity-70">{data.placeText}</p>
