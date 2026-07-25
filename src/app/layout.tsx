@@ -1,7 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces } from "next/font/google";
 import { config } from "@/config";
 import "./globals.css";
+
+// 모바일 기기(실기기) 접속 시 정확한 너비 인식 및 축소/확대 방지 메타데이터
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+};
 
 // next/font: 빌드 시 폰트를 자체 호스팅하고 CSS 변수(--font-fraunces)로 노출.
 // globals.css의 --font-display 가 이 변수를 가리킨다.
