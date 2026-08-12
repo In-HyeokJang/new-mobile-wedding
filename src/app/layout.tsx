@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces } from "next/font/google";
+import { Gowun_Dodum } from "next/font/google";
+import ContentGuard from "@/components/ContentGuard";
 import { config } from "@/config";
 import "./globals.css";
 
@@ -12,14 +13,18 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-// next/font: 빌드 시 폰트를 자체 호스팅하고 CSS 변수(--font-fraunces)로 노출.
+// next/font: 빌드 시 폰트를 자체 호스팅하고 CSS 변수(--font-gowun-dodum)로 노출.
 // globals.css의 --font-display 가 이 변수를 가리킨다.
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-fraunces",
+//
+// preload:false 인 이유 — 한글 폰트는 글리프가 많아 Google 이 unicode-range 로
+// 100여 개 조각으로 쪼개 준다. preload 를 켜면 그 조각 전부가 <head> 에
+// preload 링크로 박혀 초기 로딩이 오히려 느려진다. swap 으로 두면 브라우저가
+// 실제 쓰인 글자가 들어있는 조각만 골라 받는다.
+const gowunDodum = Gowun_Dodum({
+  weight: "400",
+  variable: "--font-gowun-dodum",
   display: "swap",
+  preload: false,
 });
 
 // 공유 미리보기(카톡/OG)용 메타데이터. config.share 에서 값 주입.
@@ -50,15 +55,26 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko" className={`${fraunces.variable} h-full antialiased`}>
+    <html lang="ko" className={`${gowunDodum.variable} h-full antialiased`}>
       <head>
         {/* 한글 본문 폰트 Pretendard (React가 head로 hoist) */}
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
         />
+        {/* 등장 애니메이션 스위치. 이 스크립트가 실행돼야만 .reveal 이 숨겨진다
+            (globals.css 의 .js .reveal). 스크립트가 막히면 애니메이션만 없고
+            내용은 정상적으로 다 보인다. 첫 페인트 전에 실행돼야 깜빡임이 없다 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add('js')`,
+          }}
+        />
       </head>
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        <ContentGuard />
+        {children}
+      </body>
     </html>
   );
 }

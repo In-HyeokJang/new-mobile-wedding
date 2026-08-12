@@ -38,6 +38,25 @@ declare global {
 
 type Coords = { lat: number; lng: number };
 
+// config 문구 안의 **...** 를 굵게 렌더링.
+// 마크다운 파서를 붙이기엔 과하고 필요한 건 강조 하나뿐이라 최소한만 처리한다.
+// split 에 캡처 그룹을 쓰면 구분자(**...**)도 결과 배열에 남는다.
+function Emphasized({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+        part.startsWith("**") && part.endsWith("**") ? (
+          <strong key={i} className="font-semibold text-ink">
+            {part.slice(2, -2)}
+          </strong>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+}
+
 // 오시는 길 (카카오맵). 주소 → 좌표는 카카오 Geocoder로 그때그때 변환.
 // SDK/지오코딩은 이 섹션에서만 필요하므로 지연 로드.
 export default function Location({ data }: { data: LocationData }) {
@@ -133,6 +152,30 @@ export default function Location({ data }: { data: LocationData }) {
               티맵
             </a>
           </div>
+
+          {/* 교통 안내 — 접지 않고 전부 펼쳐 둔다.
+              어르신 하객이 탭해서 여는 UI를 놓치는 경우가 많다 */}
+          {data.transport.length > 0 && (
+            <div className="mt-14 space-y-8 text-left">
+              {data.transport.map((t) => (
+                <div key={t.label}>
+                  <p className="font-body text-xs font-semibold tracking-wide text-accent">
+                    {t.label}
+                  </p>
+                  <div className="mt-2 space-y-1">
+                    {t.lines.map((line, i) => (
+                      <p
+                        key={i}
+                        className="font-body text-sm leading-relaxed text-body"
+                      >
+                        <Emphasized text={line} />
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </Section>
     </>

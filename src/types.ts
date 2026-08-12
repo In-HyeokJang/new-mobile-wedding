@@ -44,15 +44,40 @@ export type CalendarData = {
 
 export type GalleryData = { photos: string[] };
 
+// 교통 안내 한 묶음 (대중교통 / 자가용 / 주차).
+// 항목 수를 고정하지 않고 배열로 둬서 예식장마다 필요한 만큼만 넣을 수 있게 한다.
+export type TransportInfo = {
+  label: string; // 예: "대중교통 이용 시"
+  lines: string[]; // 안내 문구 (줄 단위)
+};
+
 // 오시는 길 (카카오맵). 좌표는 address를 카카오 Geocoder로 변환해 얻으므로 별도 저장 불필요.
 export type LocationData = {
   name: string; // 건물명 (지도 검색/마커 기준)
   hallText: string; // 홀 상세 (예: "제니스홀 5층")
   address: string; // 도로명 주소 (지오코딩 + 표시 + 복사용)
+  transport: TransportInfo[];
 };
 
-export type QA = { q: string; a: string };
-export type OurStoryData = { title?: string; qa: QA[] };
+// 마음 전하실 곳 — 계좌 한 줄.
+export type AccountEntry = {
+  relation: string; // 예: "신랑", "아버지", "어머니"
+  name: string;
+  bank: string;
+  number: string;
+};
+
+// 신랑측 / 신부측 묶음.
+export type AccountSide = {
+  label: string; // "신랑측" | "신부측"
+  tone?: "groom" | "bride"; // 라벨 칸 배경색. 없으면 무채색으로 나온다
+  accounts: AccountEntry[];
+};
+
+export type AccountData = {
+  note?: string; // 상단 안내 문구
+  sides: AccountSide[];
+};
 
 // 방명록
 export type GuestbookEntry = {
@@ -81,9 +106,9 @@ export type InvitationConfig = {
   intro: IntroData;
   invitation: InvitationData;
   calendar: CalendarData;
-  location: LocationData;
   gallery: GalleryData;
-  ourStory: OurStoryData;
+  location: LocationData;
+  account: AccountData;
   share: ShareData;
   bgm: BgmData;
 };
