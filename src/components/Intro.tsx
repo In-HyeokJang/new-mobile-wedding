@@ -43,7 +43,7 @@ export default function Intro({ data, theme }: { data: IntroData; theme: Theme }
 
       {/* 2) 사진 아래 텍스트 — 이름 / 날짜 / 장소 */}
       <Reveal>
-        <section className="px-8 pt-20 pb-16 text-center">
+        <section className="px-8 pt-14 pb-12 text-center">
           <h1 className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 break-keep font-display text-2xl leading-tight tracking-tight text-ink min-[380px]:text-[1.75rem]">
             <span className="whitespace-nowrap">{data.groomName}</span>
             <span style={{ color: theme.accent }}>&amp;</span>

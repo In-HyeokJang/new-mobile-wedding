@@ -19,6 +19,11 @@
   --color-bride: #f9ebe9;
   --color-bride-ink: #8f544e;
 
+  /* 캘린더 예식일 하트. accent(#ff630f)가 주황이라 차가운 핑크를 쓰면
+     둘이 따로 논다. 노란기가 살짝 도는 따뜻한 분홍으로 맞췄다 */
+  --color-heart: #ff6b8a;
+  --color-heart-soft: #ffb3c4;
+
   /* 고운돋움. 한글 글리프가 있으므로 제목이 시스템 서체로 폴백되지 않는다
      (이전 Fraunces 는 라틴 전용이라 한글 제목이 기기마다 다르게 나왔다) */
   --font-display: var(--font-gowun-dodum), sans-serif;
@@ -80,6 +85,25 @@ img {
   transform: none;
 }
 
+/* 캘린더 예식일 주변 작은 하트 — 천천히 커졌다 작아진다.
+   여러 개에 같은 애니메이션을 주되 animationDelay 로 어긋나게 해서
+   한꺼번에 깜빡이지 않도록 한다 (Calendar.tsx) */
+@keyframes heart-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.heart-pulse {
+  animation: heart-pulse 2.4s ease-in-out infinite;
+}
+
 /* 기기에서 '모션 줄이기'를 켠 사람에겐 애니메이션을 끄고 바로 보여준다.
    움직임에 멀미를 느끼는 사람이 실제로 있다 */
 @media (prefers-reduced-motion: reduce) {
@@ -88,5 +112,10 @@ img {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+
+  .heart-pulse {
+    animation: none;
+    opacity: 0.8;
   }
 }
