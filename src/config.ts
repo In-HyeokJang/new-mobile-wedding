@@ -14,7 +14,7 @@ export const config: InvitationConfig = {
   intro: {
     groomName: "장인혁",
     brideName: "박재은", // TODO: 신부 이름
-    dateText: "2026. 12. 13 일요일 1:30 PM",
+    dateText: "2026.12.13 일요일 오후 1시 30분",
     placeText: "더뉴컨벤션 웨딩홀 제니스홀 5층",
     mainPhoto: "/images/main.jpg", // TODO: 실제 메인 사진으로 교체
   },
@@ -26,8 +26,8 @@ export const config: InvitationConfig = {
       "저희 두 사람의 시작을 축복해 주세요.",
     ],
     // TODO: 실제 양가 부모님 성함/신부 이름
-    groom: { fatherName: "장면섭", motherName: "김선숙", childRelation: "아들", childName: "장인혁" },
-    bride: { fatherName: "박민규", motherName: "정정아", childRelation: "딸", childName: "박재은" },
+    groom: { fatherName: "장면섭", motherName: "김선숙", childRelation: "아들", childName: "인혁" },
+    bride: { fatherName: "박민규", motherName: "정정아", childRelation: "딸", childName: "재은" },
   },
   calendar: {
     year: 2026,
@@ -41,6 +41,40 @@ export const config: InvitationConfig = {
     name: "더뉴컨벤션 웨딩홀",
     hallText: "제니스홀 5층",
     address: "서울특별시 강서구 공항대로36길 57",
+    // 버스 노선은 예식장 공식 홈페이지(thenewwed.kr/Location) 기준.
+    // 주차는 공식 페이지에 안내가 없어 웨딩 정보 사이트들을 교차 확인한 값 →
+    // TODO: 예식 전 예식장에 전화(1661-3303)로 무료 시간/이대서울병원 이용 가능 여부 재확인
+    transport: [
+      // **...** 로 감싼 부분은 굵게 표시된다 (Location.tsx 의 Emphasized).
+      {
+        label: "지하철 이용 시",
+        lines: ["5호선 **발산역 7번 출구**, 도보 3분"],
+      },
+      {
+        label: "버스 이용 시",
+        lines: [
+          "모두 **발산역** 정류장에서 내리시면 됩니다.",
+          "간선(파랑) 601, 605, 654, 661",
+          "지선(초록) 6630, 6632, 6633, 6645, 6648, 6712",
+          "광역 3000, 3000-1 · 경기 60, 60-3",
+          "공항 6003 · 마을 강서05, 강서06",
+        ],
+      },
+      {
+        label: "자가용 이용 시",
+        lines: [
+          "내비게이션에 **더뉴컨벤션 웨딩홀** 또는 **공항대로36길 57**을 검색해 주세요.",
+        ],
+      },
+      {
+        label: "주차 안내",
+        lines: [
+          "건물 지하 주차장 이용 · **2시간 무료**",
+          "주차 등록은 **1층 엘리베이터 앞**에서 해주세요.",
+          "만차 시 길 건너 **이대서울병원** 주차장을 이용하실 수 있습니다.",
+        ],
+      },
+    ],
   },
   gallery: {
     // TODO: 실제 사진으로 교체 (public/images/gallery-*.jpg)
@@ -53,13 +87,28 @@ export const config: InvitationConfig = {
       "/images/gallery-6.jpg",
     ],
   },
-  ourStory: {
-    title: "우리 두 사람의 이야기",
-    // TODO: 실제 인터뷰 내용으로 교체
-    qa: [
-      { q: "처음 만난 순간은?", a: "친구 소개로 만나 첫 대화부터 잘 통했어요." },
-      { q: "서로의 첫인상은?", a: "멀리서 봐도 이쁘고 아름다운 여자가 첫눈에 들어왔어요." },
-      { q: "프러포즈는 어땠나요?", a: "아직 고민중~" },
+  // 마음 전하실 곳.
+  // TODO: 실제 은행/계좌번호로 교체. 넣지 않을 분은 배열에서 빼면 그대로 사라진다.
+  account: {
+    note: "참석이 어려우신 분들을 위해 계좌를 안내드립니다.",
+    sides: [
+      {
+        label: "신랑측",
+        tone: "groom",
+        accounts: [
+          { relation: "신랑", name: "장인혁", bank: "우리은행", number: "1002-265-571220" },
+          { relation: "아버지", name: "장면섭", bank: "○○은행", number: "000-0000-0000" },
+        ],
+      },
+      {
+        label: "신부측",
+        tone: "bride",
+        accounts: [
+          { relation: "신부", name: "박재은", bank: "○○은행", number: "000-0000-0000" },
+          { relation: "아버지", name: "박민규", bank: "○○은행", number: "000-0000-0000" },
+          { relation: "어머니", name: "정정아", bank: "○○은행", number: "000-0000-0000" },
+        ],
+      },
     ],
   },
   share: {

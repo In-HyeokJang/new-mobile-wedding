@@ -132,7 +132,7 @@ export default function Calendar({
             <span>&nbsp;</span>
           ) : dday > 0 ? (
             <span>
-              결혼식까지{" "}
+              인혁❤재은 결혼식까지{" "}
               <span className="font-semibold text-accent">D-{dday}</span>
             </span>
           ) : dday === 0 ? (

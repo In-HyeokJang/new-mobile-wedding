@@ -11,7 +11,17 @@
   --color-hairline: #e6dfd8;
   --color-accent: #ff630f;
 
-  --font-display: var(--font-fraunces), serif;
+  /* 마음 전하실 곳 — 신랑측/신부측 구분용.
+     canvas(#faf9f5)가 따뜻한 색이라 쨍한 파랑/빨강은 혼자 튄다.
+     채도를 낮춰 눕힌 톤으로 넣어야 청첩장 분위기를 안 깬다. */
+  --color-groom: #e9eff6;
+  --color-groom-ink: #3f5f80;
+  --color-bride: #f9ebe9;
+  --color-bride-ink: #8f544e;
+
+  /* 고운돋움. 한글 글리프가 있으므로 제목이 시스템 서체로 폴백되지 않는다
+     (이전 Fraunces 는 라틴 전용이라 한글 제목이 기기마다 다르게 나왔다) */
+  --font-display: var(--font-gowun-dodum), sans-serif;
   --font-body: "Pretendard", sans-serif;
 }
 
@@ -22,4 +32,61 @@ body {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* 사진 무단 저장을 한 단계 귀찮게 만드는 장치 (보안 아님 — ContentGuard.tsx 주석 참고).
+   모바일에서 사진이 새는 경로는 대부분 '길게 눌러 이미지 저장' 이라
+   touch-callout 을 끄는 게 실질적으로 가장 효과가 크다. */
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 방명록 입력란은 예외 — 선택/편집이 막히면 글을 못 쓴다 */
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* 스크롤 등장 애니메이션 (Reveal.tsx).
+
+   기본값은 "그냥 보이는 상태"다. JS 가 실제로 실행될 때만 <html> 에 .js 가
+   붙고, 그때부터 숨겼다가 스크롤에 맞춰 보여준다.
+   반대로(기본을 숨김으로) 만들면 스크립트가 막히거나 실패하는 순간
+   페이지가 백지가 된다. */
+.reveal {
+  transition:
+    opacity 700ms ease-out,
+    transform 700ms ease-out;
+}
+
+.js .reveal {
+  opacity: 0;
+  /* 나타난 뒤엔 transform 을 none 으로 되돌린다. translateY(0) 을 남기면
+     그 안의 position:fixed(갤러리 라이트박스)가 화면이 아니라
+     이 요소 기준으로 배치돼 전체화면이 깨진다 */
+  transform: translateY(24px);
+}
+
+.js .reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* 기기에서 '모션 줄이기'를 켠 사람에겐 애니메이션을 끄고 바로 보여준다.
+   움직임에 멀미를 느끼는 사람이 실제로 있다 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .js .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }

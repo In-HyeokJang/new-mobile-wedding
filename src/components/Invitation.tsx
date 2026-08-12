@@ -19,13 +19,13 @@ export default function Invitation({ data }: { data: InvitationData }) {
   return (
     <Section eyebrow="Invitation" className="bg-canvas text-center">
       <div className="mx-auto max-w-md">
-        <div className="space-y-2 font-display text-lg leading-relaxed text-ink">
+        <div className="space-y-3 font-display text-lg leading-relaxed text-ink">
           {data.greeting.map((line, i) => (
             <p key={i}>{line}</p>
           ))}
         </div>
 
-        <div className="mx-auto my-12 h-px w-12 bg-hairline" />
+        <div className="mx-auto my-16 h-px w-12 bg-hairline" />
 
         <div className="space-y-3">
           <ParentNames p={data.groom} />
