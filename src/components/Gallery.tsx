@@ -5,11 +5,21 @@ import Image from "next/image";
 import Section from "./Section";
 import type { GalleryData } from "@/types";
 
+// 처음에 보여줄 장수. 사진이 이보다 많으면 "더보기"로 접어 둔다 —
+// 사진이 늘어날수록 갤러리 섹션만 한없이 길어져 뒤 섹션이 멀어지기 때문.
+const INITIAL_COUNT = 6;
+
 // 사진 그리드 + 탭하면 전체화면 라이트박스(좌우 이동/스와이프).
 export default function Gallery({ data }: { data: GalleryData }) {
   const photos = data.photos;
   const [open, setOpen] = useState<number | null>(null); // 열린 사진 인덱스 (null=닫힘)
   const [touchX, setTouchX] = useState<number | null>(null);
+  const [expanded, setExpanded] = useState(false);
+
+  // 그리드에만 적용되는 제한. 라이트박스는 항상 photos 전체를 넘나든다 →
+  // 접힌 상태에서 6번째 사진을 열어도 7번째 이후까지 계속 넘겨볼 수 있다.
+  const hasMore = photos.length > INITIAL_COUNT;
+  const visible = expanded ? photos : photos.slice(0, INITIAL_COUNT);
 
   // 닫을 때는 직접 null을 넣지 않고 history.back()으로 되돌린다 — 열 때 쌓아둔
   // 히스토리를 여기서 되돌려 소비해야, 폰 "뒤로가기"로 닫았을 때와 동작이
@@ -52,9 +62,10 @@ export default function Gallery({ data }: { data: GalleryData }) {
   return (
     <Section eyebrow="Gallery" className="bg-canvas">
       <div className="grid grid-cols-3 gap-1.5">
-        {photos.map((src, i) => (
+        {visible.map((src, i) => (
           <button
-            key={src}
+            // 같은 파일을 두 번 넣어도 key 가 겹치지 않도록 인덱스를 붙인다
+            key={`${src}-${i}`}
             onClick={() => setOpen(i)}
             className="relative aspect-square overflow-hidden"
             aria-label={`사진 ${i + 1} 크게 보기`}
@@ -69,6 +80,32 @@ export default function Gallery({ data }: { data: GalleryData }) {
           </button>
         ))}
       </div>
+
+      {hasMore && (
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          className="mx-auto mt-5 flex items-center gap-1.5 rounded-full bg-accent/10 px-5 py-2 font-body text-sm text-body"
+        >
+          {expanded
+            ? "접기"
+            : `사진 더보기 (${photos.length - INITIAL_COUNT}장)`}
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+            className={`h-4 w-4 text-muted transition-transform ${
+              expanded ? "rotate-180" : ""
+            }`}
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+      )}
 
       {open !== null && (
         <div
