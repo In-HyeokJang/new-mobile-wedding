@@ -34,6 +34,36 @@ function FlowerFlourish({ className = "" }: { className?: string }) {
   );
 }
 
+// 하트. 예식일 표시와 그 주변 장식에 같이 쓴다.
+function Heart({
+  className = "",
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      style={style}
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+    </svg>
+  );
+}
+
+// 예식일 칸을 둘러싸는 작은 하트들.
+// 좌우로 붙이면 옆 날짜(12, 14)와 겹치므로 위아래 여백 쪽 모서리로만 보낸다.
+const SPARKLES = [
+  { cls: "-top-1 left-0 h-2 w-2", delay: "0ms" },
+  { cls: "-top-1.5 right-0.5 h-1.5 w-1.5", delay: "600ms" },
+  { cls: "-bottom-1 right-0 h-2 w-2", delay: "1200ms" },
+  { cls: "-bottom-1.5 left-0.5 h-1.5 w-1.5", delay: "1800ms" },
+];
+
 // 달력 + D-day. D-day는 "오늘" 기준이라 클라이언트에서 계산.
 export default function Calendar({
   data,
@@ -84,9 +114,12 @@ export default function Calendar({
   return (
     <Section eyebrow="The Day" className="bg-canvas text-center">
       <div className="mx-auto max-w-xs">
+        {/* 날짜 박스와 아래 카운트다운을 같은 복숭아빛 면으로 통일한다.
+            테두리(hairline)는 캔버스와 명도차가 거의 없어 안 보이므로 걷어냈다.
+            "12" = 알파 7% (기존 "0d" 5%에서 살짝 올림) */}
         <div
-          className="rounded-2xl border px-6 py-7"
-          style={{ borderColor: theme.hairline, background: `${theme.accent}0d` }}
+          className="rounded-2xl px-6 py-7"
+          style={{ background: `${theme.accent}12` }}
         >
           <div className="flex items-center justify-center gap-3">
             <FlowerFlourish className="h-4 w-4 text-accent" />
@@ -99,7 +132,9 @@ export default function Calendar({
           <p className="mt-2 font-body text-sm text-muted">{data.timeText}</p>
         </div>
 
-        <div className="mt-8 grid grid-cols-7 gap-y-2 text-sm">
+        <p className="mt-10 font-display text-xl text-ink">{data.month}월</p>
+
+        <div className="mt-5 grid grid-cols-7 gap-y-2 text-sm">
           {WEEK.map((w, i) => (
             <div
               key={w}
@@ -110,14 +145,41 @@ export default function Calendar({
           ))}
           {cells.map((d, i) => {
             const isDay = d === data.day;
+            // 첫 열이 일요일. 날짜가 전부 같은 색이면 달력이 평평해 보인다
+            const isSunday = i % 7 === 0;
+
+            if (d && isDay) {
+              return (
+                <div
+                  key={i}
+                  className="relative flex h-9 items-center justify-center"
+                >
+                  {SPARKLES.map((s) => (
+                    <Heart
+                      key={s.cls}
+                      className={`heart-pulse pointer-events-none absolute text-heart-soft ${s.cls}`}
+                      // 하나씩 어긋나게 뛰도록 시작 시점을 밀어준다
+                      style={{ animationDelay: s.delay }}
+                    />
+                  ))}
+                  <span className="relative flex h-8 w-8 items-center justify-center">
+                    <Heart className="absolute inset-0 h-8 w-8 text-heart" />
+                    {/* 하트는 아래로 뾰족해 무게중심이 위에 있다 → 숫자를 1px 올려야 가운데로 보인다 */}
+                    <span className="relative -translate-y-px font-body text-[13px] font-semibold text-white">
+                      {d}
+                    </span>
+                  </span>
+                </div>
+              );
+            }
+
             return (
               <div key={i} className="flex h-9 items-center justify-center">
                 {d && (
                   <span
                     className={`flex h-8 w-8 items-center justify-center rounded-full font-body ${
-                      isDay ? "text-white" : "text-body"
+                      isSunday ? "text-heart" : "text-body"
                     }`}
-                    style={isDay ? { background: theme.accent } : undefined}
                   >
                     {d}
                   </span>
@@ -127,18 +189,26 @@ export default function Calendar({
           })}
         </div>
 
-        <div className="mt-8 font-body text-sm text-muted">
+        {/* D-day 줄도 같은 면 처리를 해서 떠 있는 글자가 아니라 하나의 표식으로 읽히게 */}
+        <div className="mt-8">
           {dday === null ? (
             <span>&nbsp;</span>
-          ) : dday > 0 ? (
-            <span>
-              인혁❤재은 결혼식까지{" "}
-              <span className="font-semibold text-accent">D-{dday}</span>
-            </span>
-          ) : dday === 0 ? (
-            <span className="font-semibold text-accent">D-DAY</span>
           ) : (
-            <span>결혼한 지 {-dday}일</span>
+            <span
+              className="inline-block rounded-full px-4 py-1.5 font-body text-sm text-body"
+              style={{ background: `${theme.accent}12` }}
+            >
+              {dday > 0 ? (
+                <>
+                  인혁<span className="text-heart">❤</span>재은 결혼식까지{" "}
+                  <span className="font-semibold text-accent">D-{dday}</span>
+                </>
+              ) : dday === 0 ? (
+                <span className="font-semibold text-accent">D-DAY</span>
+              ) : (
+                <>결혼한 지 {-dday}일</>
+              )}
+            </span>
           )}
         </div>
 
@@ -152,13 +222,13 @@ export default function Calendar({
             ].map((unit) => (
               <div
                 key={unit.label}
-                className="rounded-xl border py-3"
-                style={{ borderColor: theme.hairline }}
+                className="rounded-xl py-3.5"
+                style={{ background: `${theme.accent}12` }}
               >
-                <p className="font-display text-xl tabular-nums text-accent">
+                <p className="font-display text-2xl tabular-nums text-accent">
                   {String(unit.value).padStart(2, "0")}
                 </p>
-                <p className="mt-0.5 font-body text-[10px] text-muted">
+                <p className="mt-0.5 font-body text-[11px] text-muted">
                   {unit.label}
                 </p>
               </div>

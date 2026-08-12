@@ -156,7 +156,7 @@ export default function Location({ data }: { data: LocationData }) {
           {/* 교통 안내 — 접지 않고 전부 펼쳐 둔다.
               어르신 하객이 탭해서 여는 UI를 놓치는 경우가 많다 */}
           {data.transport.length > 0 && (
-            <div className="mt-14 space-y-8 text-left">
+            <div className="mt-10 space-y-6 text-left">
               {data.transport.map((t) => (
                 <div key={t.label}>
                   <p className="font-body text-xs font-semibold tracking-wide text-accent">
