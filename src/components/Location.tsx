@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Script from "next/script";
 import Section from "./Section";
 import { copyText } from "@/lib/clipboard";
-import type { LocationData } from "@/types";
+import type { LocationData, TransportInfo } from "@/types";
 
 type KakaoLatLng = { getLat(): number; getLng(): number };
 type KakaoMap = {
@@ -67,6 +67,66 @@ function Emphasized({ text }: { text: string }) {
         )
       )}
     </>
+  );
+}
+
+function InfoLines({ lines }: { lines: string[] }) {
+  return (
+    <div className="space-y-1">
+      {lines.map((line, i) => (
+        <p key={i} className="font-body text-sm leading-relaxed text-body">
+          <Emphasized text={line} />
+        </p>
+      ))}
+    </div>
+  );
+}
+
+// 눌러서 펼치는 안내 한 줄 (지하철/버스/자가용).
+// 높이 애니메이션은 grid-rows 0fr ↔ 1fr 전환으로 한다 — 내용 높이를 몰라도 부드럽게 열린다.
+// 접혀 있을 때는 inert 로 안쪽 내용을 탭/스크린리더 대상에서 뺀다.
+function FoldableInfo({ info }: { info: TransportInfo }) {
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+
+  return (
+    <div>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="flex min-h-12 w-full items-center justify-between px-4 font-body text-base text-ink"
+      >
+        {info.label}
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+          className={`h-5 w-5 text-muted transition-transform duration-300 ${
+            open ? "rotate-180" : ""
+          }`}
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+      <div
+        id={panelId}
+        inert={!open}
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="px-4 pb-4">
+            <InfoLines lines={info.lines} />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -142,6 +202,9 @@ export default function Location({ data }: { data: LocationData }) {
     ? `tmap://route?goalname=${encodeURIComponent(data.name)}&goalx=${coords.lng}&goaly=${coords.lat}`
     : `tmap://search?name=${query}`;
 
+  const foldable = data.transport.filter((t) => t.collapsible);
+  const always = data.transport.filter((t) => !t.collapsible);
+
   const linkBase =
     "flex min-h-11 items-center justify-center rounded-lg border border-hairline text-center font-body text-sm text-body";
 
@@ -199,24 +262,25 @@ export default function Location({ data }: { data: LocationData }) {
             </a>
           </div>
 
-          {/* 교통 안내 — 접지 않고 전부 펼쳐 둔다.
-              어르신 하객이 탭해서 여는 UI를 놓치는 경우가 많다 */}
-          {data.transport.length > 0 && (
+          {/* 교통 안내.
+              지하철/버스/자가용처럼 긴 안내(collapsible)는 버튼으로 접어 두고 눌러서 펼친다.
+              주차·식사처럼 모든 하객이 봐야 하는 안내는 항상 펼쳐 둔다 */}
+          {foldable.length > 0 && (
+            <div className="mt-10 divide-y divide-hairline overflow-hidden rounded-xl border border-hairline bg-white text-left">
+              {foldable.map((t) => (
+                <FoldableInfo key={t.label} info={t} />
+              ))}
+            </div>
+          )}
+          {always.length > 0 && (
             <div className="mt-10 space-y-6 text-left">
-              {data.transport.map((t) => (
+              {always.map((t) => (
                 <div key={t.label}>
                   <p className="font-body text-sm font-semibold tracking-wide text-accent-ink">
                     {t.label}
                   </p>
-                  <div className="mt-2 space-y-1">
-                    {t.lines.map((line, i) => (
-                      <p
-                        key={i}
-                        className="font-body text-sm leading-relaxed text-body"
-                      >
-                        <Emphasized text={line} />
-                      </p>
-                    ))}
+                  <div className="mt-2">
+                    <InfoLines lines={t.lines} />
                   </div>
                 </div>
               ))}

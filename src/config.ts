@@ -50,10 +50,12 @@ export const config: InvitationConfig = {
       // **...** 로 감싼 부분은 굵게 표시된다 (Location.tsx 의 Emphasized).
       {
         label: "지하철 이용 시",
+        collapsible: true,
         lines: ["5호선 **발산역 7번 출구**, 도보 2분"],
       },
       {
         label: "버스 이용 시",
+        collapsible: true,
         lines: [
           "모두 **발산역** 정류장에서 내리시면 됩니다.",
           "간선(파랑) 601, 605, 654, 661",
@@ -64,6 +66,7 @@ export const config: InvitationConfig = {
       },
       {
         label: "자가용 이용 시",
+        collapsible: true,
         lines: [
           "내비게이션에 **더뉴컨벤션** 또는 **공항대로36길 57**을 검색해 주세요.",
           "(지번: 내발산동 655-2)",

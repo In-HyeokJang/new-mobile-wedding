@@ -53,6 +53,9 @@ export type GalleryData = { photos: string[] };
 export type TransportInfo = {
   label: string; // 예: "대중교통 이용 시"
   lines: string[]; // 안내 문구 (줄 단위)
+  // true 면 제목 버튼만 보이고 눌러야 펼쳐진다 (지하철/버스처럼 긴 안내용).
+  // 주차·식사처럼 모두가 봐야 하는 안내는 비워 두면 항상 펼쳐져 있다.
+  collapsible?: boolean;
 };
 
 // 오시는 길 (카카오맵). 좌표는 address를 카카오 Geocoder로 변환해 얻으므로 별도 저장 불필요.
