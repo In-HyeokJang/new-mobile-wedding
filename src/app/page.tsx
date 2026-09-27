@@ -27,7 +27,7 @@ export default function Home() {
     <main className="mx-auto min-h-screen max-w-[430px] bg-canvas overflow-x-clip shadow-sm">
       {/* 인트로 첫 화면(사진)은 감싸지 않는다 — 링크를 열자마자 바로 떠야 한다.
           인트로 내부의 텍스트 블록만 Intro.tsx 안에서 따로 등장시킨다 */}
-      <Intro data={config.intro} theme={config.theme} />
+      <Intro data={config.intro} />
 
       <Reveal>
         <Invitation data={config.invitation} />
