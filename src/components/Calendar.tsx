@@ -149,7 +149,8 @@ export default function Calendar({
         >
           <div className="flex items-center justify-center gap-3">
             <FlowerFlourish className="h-4 w-4 text-accent" />
-            <p className="font-display text-3xl tracking-wide text-ink">
+            {/* 320px 폰에서는 3xl 이면 두 줄로 깨진다 → 좁은 화면만 한 단계 작게 */}
+            <p className="whitespace-nowrap font-display text-2xl tracking-wide text-ink min-[360px]:text-3xl">
               {data.year}. {String(data.month).padStart(2, "0")}.{" "}
               {String(data.day).padStart(2, "0")}
             </p>

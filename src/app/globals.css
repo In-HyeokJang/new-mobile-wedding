@@ -72,9 +72,10 @@ img {
 
 /* 화면 높이. svh/dvh 를 모르는 구형 브라우저(iOS 15.4 미만 등)는 뒤 선언을 버리고
    앞의 vh 를 쓴다. Tailwind 클래스 두 개로는 선언 순서를 보장할 수 없어 여기 둔다 */
+/* 첫 화면 사진 카드: 화면 높이에서 위·아래 여백(0.75rem × 2)과 상단 safe-area 를 뺀 값 */
 .h-screen-intro {
-  height: 100vh;
-  height: 100svh;
+  height: calc(100vh - 1.5rem - env(safe-area-inset-top));
+  height: calc(100svh - 1.5rem - env(safe-area-inset-top));
 }
 
 .h-lightbox {
