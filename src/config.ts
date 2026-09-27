@@ -47,7 +47,6 @@ export const config: InvitationConfig = {
     // 지하철·버스·주소는 예식장 공식 홈페이지(thenewwed.kr/Location) 기준 (2026-09-27 대조).
     // 주차는 예식장에 직접 확인한 내용 (같은 건물·이대서울병원 모두 2시간 무료).
     transport: [
-      // **...** 로 감싼 부분은 굵게 표시된다 (Location.tsx 의 Emphasized).
       {
         label: "지하철 이용 시",
         collapsible: true,
@@ -77,13 +76,12 @@ export const config: InvitationConfig = {
         collapsible: true,
         lines: [
           "예식장 건물 주차장 · **2시간 무료**",
-          "만차 시 인근 **이대서울병원** 주차장 · **2시간 무료**",
+          "만차 시 예식장 옆 **이대서울병원** 주차장 · **2시간 무료**",
         ],
       },
     ],
   },
   gallery: {
-    // TODO: 실제 사진으로 교체 (public/images/gallery-*.jpg)
     photos: [
       "/images/gallery-1.jpg",
       "/images/gallery-2.jpg",
@@ -93,8 +91,6 @@ export const config: InvitationConfig = {
       "/images/gallery-6.jpg",
     ],
   },
-  // 마음 전하실 곳.
-  // TODO: 실제 은행/계좌번호로 교체. 넣지 않을 분은 배열에서 빼면 그대로 사라진다.
   account: {
     note: "참석이 어려우신 분들을 위해 계좌를 안내드립니다.",
     sides: [
@@ -103,16 +99,16 @@ export const config: InvitationConfig = {
         tone: "groom",
         accounts: [
           { relation: "신랑", name: "장인혁", bank: "우리은행", number: "1002-265-571220" },
-          { relation: "아버지", name: "장면섭", bank: "○○은행", number: "000-0000-0000" },
+          { relation: "아버지", name: "장면섭", bank: "농협은행", number: "243030-52-055353" },
         ],
       },
       {
         label: "신부측",
         tone: "bride",
         accounts: [
-          { relation: "신부", name: "박재은", bank: "○○은행", number: "000-0000-0000" },
-          { relation: "아버지", name: "박민규", bank: "○○은행", number: "000-0000-0000" },
-          { relation: "어머니", name: "정정아", bank: "○○은행", number: "000-0000-0000" },
+          { relation: "신부", name: "박재은", bank: "신한은행", number: "110-430-448828" },
+          { relation: "아버지", name: "박민규", bank: "농협은행", number: "356-0489-8581-63" },
+          { relation: "어머니", name: "정정아", bank: "신한은행", number: "110-013-468768" },
         ],
       },
     ],
@@ -125,9 +121,8 @@ export const config: InvitationConfig = {
   },
   share: {
     title: "인혁 ♥ 재은 결혼합니다",
-    // 카톡 미리보기는 설명을 두 줄 정도만 보여줘서 짧게 둔다
     description: "12월 13일(일) 오후 1시 30분 · 더뉴컨벤션 5층 제니스홀",
-    ogImage: "/og-image-v2.jpg", // 교체 시 파일명을 바꿔야 카톡이 캐시된 옛 이미지를 안 쓴다
+    ogImage: "/og-image-v2.jpg",
     siteUrl: "https://jihpjemobilewedding.vercel.app",
   },
   bgm: {
