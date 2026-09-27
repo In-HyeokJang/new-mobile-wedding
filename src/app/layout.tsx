@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     description: share.description,
     url: share.siteUrl,
     siteName: share.title,
-    // 실제 파일 크기와 맞춰야 카톡 미리보기가 잘리지 않는다.
-    // TODO: OG 이미지 교체 시 1200×630 으로 만들고 이 값도 바꾼 뒤 카카오 캐시 초기화
-    images: [{ url: share.ogImage, width: 1376, height: 768 }],
+    // 실제 파일 크기와 맞춰야 카톡 미리보기가 잘리지 않는다 (1200×630 권장 비율).
+    // 이미지를 바꾸면 이 값도 맞추고, 파일명을 바꾸거나 카카오 캐시를 초기화한다
+    images: [{ url: share.ogImage, width: 1200, height: 630 }],
     locale: "ko_KR",
     type: "website",
   },

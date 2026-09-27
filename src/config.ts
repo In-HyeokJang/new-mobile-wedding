@@ -131,8 +131,9 @@ export const config: InvitationConfig = {
   },
   share: {
     title: "인혁 ♥ 재은 결혼합니다",
-    description: "2026년 12월 13일 일요일 오후 1시 30분 · 더뉴컨벤션 웨딩홀 5층 제니스홀",
-    ogImage: "/og-image.jpg",
+    // 카톡 미리보기는 설명을 두 줄 정도만 보여줘서 짧게 둔다
+    description: "12월 13일(일) 오후 1시 30분 · 더뉴컨벤션 5층 제니스홀",
+    ogImage: "/og-image-v2.jpg", // 교체 시 파일명을 바꿔야 카톡이 캐시된 옛 이미지를 안 쓴다
     siteUrl: "https://jihpjemobilewedding.vercel.app",
   },
   bgm: {

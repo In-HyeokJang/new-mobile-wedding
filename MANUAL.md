@@ -43,7 +43,7 @@
 |---|---|---|
 | `public/images/main.jpg` | 첫 화면 메인 사진 | 세로 사진 |
 | `public/images/gallery-1~6.jpg` | 갤러리 | 정사각형/세로 |
-| `public/og-image.jpg` | 카톡 공유 썸네일 | 1200×630 가로 |
+| `public/og-image-v2.jpg` | 카톡 공유 썸네일 | 1200×630 가로 · 교체 시 파일명을 바꾸고 `config.ts` 의 `share.ogImage` 도 수정 (카톡 캐시 회피) |
 | `public/music/bgm.mp3` | 배경음악 | mp3 · [작곡/구하기 가이드](docs/bgm-guide.md) |
 
 > 사진은 컬러 원본 그대로 표시됨(흑백 처리 없음).
@@ -66,7 +66,6 @@
 - [ ] 갤러리 사진 `public/images/gallery-1~6.jpg` (3~6번 숫자 플레이스홀더)
 - [ ] 계좌번호 (`account` — 신랑 아버지·신부·신부 부모님이 `000-0000-0000` 임시값)
 - [ ] 연회장 층수 (`location.transport` "식사 안내"의 "아래층" → 4층/3층, 예식 1주일 전 확정)
-- [ ] OG 공유 이미지 `public/og-image.jpg` (지금 임시 디자인. 교체 시 1200×630 으로 만들고 `layout.tsx` 의 width/height 도 맞춘 뒤 카카오 캐시 초기화)
 
 ---
 
