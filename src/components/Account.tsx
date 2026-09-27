@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import Section from "./Section";
 import { copyText } from "@/lib/clipboard";
 import type { AccountData, AccountEntry, AccountSide } from "@/types";
@@ -57,22 +57,52 @@ const TONE = {
   none: "bg-canvas text-ink",
 } as const;
 
-// 신랑측 / 신부측 한 묶음. 접지 않고 항상 펼쳐 둔다.
+// 신랑측 / 신부측 한 묶음. 라벨 버튼을 눌러야 계좌가 펼쳐진다 —
+// 계좌번호가 처음부터 전부 펼쳐져 있으면 섹션이 길고 부담스럽게 보인다.
+// 여닫는 방식은 오시는 길의 교통 안내(Location.tsx FoldableInfo)와 같다.
 function SideCard({ side }: { side: AccountSide }) {
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+
   return (
     <div className="overflow-hidden rounded-xl border border-hairline bg-white">
-      <p
-        className={`border-b border-hairline px-4 py-3 font-body text-sm font-semibold ${
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className={`flex min-h-12 w-full items-center justify-between px-4 font-body text-base font-semibold ${
           TONE[side.tone ?? "none"]
         }`}
       >
-        {side.label}
-      </p>
-      <ul className="px-4 pb-1">
-        {side.accounts.map((a, i) => (
-          <AccountRow key={i} a={a} />
-        ))}
-      </ul>
+        {side.label} 계좌번호
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+          className={`h-5 w-5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+      <div
+        id={panelId}
+        inert={!open}
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <ul className="border-t border-hairline px-4 pb-1">
+            {side.accounts.map((a, i) => (
+              <AccountRow key={i} a={a} />
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
