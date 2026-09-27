@@ -33,7 +33,9 @@
 | 인사말, 양가 혼주 | `invitation` |
 | 달력 날짜/시간 | `calendar` |
 | 갤러리 사진 경로 | `gallery.photos` |
-| 인터뷰 Q&A | `ourStory` |
+| 교통·주차·식사 안내, 예식장 문의 | `location.transport` |
+| 계좌 | `account` |
+| 맨 아래 감사 인사 | `closing` |
 | 카톡 공유 제목/설명/도메인 | `share` |
 
 ### 사진/이미지 → `public/` 에 같은 파일명으로 덮어쓰기
@@ -60,15 +62,11 @@
 
 ## 🔧 교체 예정 (TODO) — 실제 값/파일로 바꿀 것
 
-- [ ] 신부 이름 (`config.ts`의 `intro.brideName`, `invitation.bride.childName`, `share.title`)
-- [ ] 양가 부모님 성함 (`invitation.groom`, `invitation.bride`)
-- [ ] 예식장/홀 이름 (`intro.placeText`, `share.description`)
-- [ ] 인사말 문구 (`invitation.greeting`)
-- [ ] 인터뷰 Q&A 실제 내용 (`ourStory.qa`)
 - [ ] 메인 사진 `public/images/main.jpg` (지금 임시 플레이스홀더)
-- [ ] 갤러리 사진 `public/images/gallery-1~6.jpg` (지금 숫자 플레이스홀더)
-- [ ] OG 공유 이미지 `public/og-image.jpg` (지금 임시 디자인)
-- [ ] 배경음악 `public/music/bgm.mp3` → 만드는 법: [docs/bgm-guide.md](docs/bgm-guide.md)
+- [ ] 갤러리 사진 `public/images/gallery-1~6.jpg` (3~6번 숫자 플레이스홀더)
+- [ ] 계좌번호 (`account` — 신랑 아버지·신부·신부 부모님이 `000-0000-0000` 임시값)
+- [ ] 연회장 층수 (`location.transport` "식사 안내"의 "아래층" → 4층/3층, 예식 1주일 전 확정)
+- [ ] OG 공유 이미지 `public/og-image.jpg` (지금 임시 디자인. 교체 시 1200×630 으로 만들고 `layout.tsx` 의 width/height 도 맞춘 뒤 카카오 캐시 초기화)
 
 ---
 

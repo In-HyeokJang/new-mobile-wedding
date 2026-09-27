@@ -2,41 +2,49 @@
 
 import { useState } from "react";
 import Section from "./Section";
+import { copyText } from "@/lib/clipboard";
 import type { AccountData, AccountEntry, AccountSide } from "@/types";
 
 // 계좌 한 줄 + 복사 버튼.
 // 하객이 은행 앱으로 옮겨 적는 수고를 없애는 게 이 섹션의 존재 이유라
 // 복사가 됐는지 눈에 보이게 알려주는 게 중요하다.
 function AccountRow({ a }: { a: AccountEntry }) {
-  const [copied, setCopied] = useState(false);
+  const [state, setState] = useState<"idle" | "copied" | "failed">("idle");
 
   async function copy() {
-    try {
-      // 하이픈을 뺀 숫자만 복사 — 은행 앱 입력창이 하이픈을 거부하는 경우가 있다
-      await navigator.clipboard.writeText(a.number.replace(/[^0-9]/g, ""));
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      /* 클립보드 권한 없으면 조용히 무시 */
-    }
+    // 하이픈을 뺀 숫자만 복사 — 은행 앱 입력창이 하이픈을 거부하는 경우가 있다
+    const ok = await copyText(a.number.replace(/[^0-9]/g, ""));
+    setState(ok ? "copied" : "failed");
+    setTimeout(() => setState("idle"), ok ? 1500 : 4000);
   }
 
   return (
-    <li className="flex items-center justify-between gap-3 border-t border-hairline py-3 first:border-t-0">
-      <div className="min-w-0 text-left">
-        <p className="font-body text-xs text-muted">
-          {a.relation} {a.name}
-        </p>
-        <p className="mt-0.5 truncate font-body text-sm text-ink">
-          {a.bank} {a.number}
-        </p>
+    <li className="border-t border-hairline py-3 first:border-t-0">
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0 text-left">
+          <p className="font-body text-sm text-muted">
+            {a.relation} {a.name}
+          </p>
+          {/* 좁은 폰(320px)에서 번호가 잘리지 않도록 은행명과 번호를 줄로 나눈다.
+              selectable — 복사 버튼이 막힌 인앱 브라우저에서 길게 눌러 복사할 수 있게 */}
+          <p className="selectable mt-0.5 font-body text-base text-ink">
+            <span className="mr-1.5">{a.bank}</span>
+            <span className="whitespace-nowrap tabular-nums">{a.number}</span>
+          </p>
+        </div>
+        <button
+          onClick={copy}
+          className="min-h-11 shrink-0 rounded-md border border-hairline px-4 font-body text-sm text-body"
+          aria-label={`${a.relation} ${a.name} 계좌번호 복사`}
+        >
+          {state === "copied" ? "복사됨" : "복사"}
+        </button>
       </div>
-      <button
-        onClick={copy}
-        className="shrink-0 rounded-md border border-hairline px-3 py-1.5 font-body text-xs text-body"
-      >
-        {copied ? "복사됨" : "복사"}
-      </button>
+      {state === "failed" && (
+        <p className="mt-1.5 text-left font-body text-sm text-danger" role="status">
+          복사가 안 되는 환경이에요. 계좌번호를 길게 눌러 복사해 주세요.
+        </p>
+      )}
     </li>
   );
 }
@@ -73,7 +81,7 @@ export default function Account({ data }: { data: AccountData }) {
   return (
     <Section eyebrow="Account" className="bg-canvas text-center">
       <div className="mx-auto max-w-xs">
-        <p className="font-display text-xl text-ink">마음 전하실 곳</p>
+        <h2 className="font-display text-xl text-ink">마음 전하실 곳</h2>
         {data.note && (
           <p className="mt-2 font-body text-sm leading-relaxed text-muted">
             {data.note}

@@ -12,7 +12,7 @@ export default function Section({
   return (
     <section className={`px-8 py-20 ${className}`}>
       {eyebrow && (
-        <p className="mb-10 text-center font-body text-xs uppercase tracking-[0.35em] text-accent">
+        <p className="mb-10 text-center font-body text-xs uppercase tracking-[0.35em] text-accent-ink">
           {eyebrow}
         </p>
       )}

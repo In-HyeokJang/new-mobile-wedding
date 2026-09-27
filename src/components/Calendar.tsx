@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Section from "./Section";
+import { ddayKST, toICSDate, weddingStart } from "@/lib/wedding-time";
 import type { CalendarData, Theme } from "@/types";
+
+// 캘린더 저장에 쓰는 일정 정보
+export type CalendarEvent = {
+  title: string; // 예: "장인혁 ♥ 박재은 결혼식"
+  location: string; // 예: "더뉴컨벤션 웨딩홀 5층 제니스홀, 서울 강서구 ..."
+};
 
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -64,44 +71,63 @@ const SPARKLES = [
   { cls: "-bottom-1.5 left-0.5 h-1.5 w-1.5", delay: "1800ms" },
 ];
 
+// 휴대폰 캘린더에 일정 추가.
+// 아이폰은 .ics 파일을 열면 바로 "캘린더에 추가" 화면이 뜬다.
+// 안드로이드는 .ics 를 받아도 파일로 저장될 뿐이라 구글 캘린더 추가 화면으로 보낸다.
+function addToCalendar(data: CalendarData, event: CalendarEvent) {
+  if (/iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent)) {
+    window.location.href = "/wedding.ics";
+    return;
+  }
+  const start = weddingStart(data);
+  const end = new Date(start.getTime() + data.durationMinutes * 60_000);
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: event.title,
+    dates: `${toICSDate(start)}/${toICSDate(end)}`,
+    location: event.location,
+  });
+  window.open(
+    `https://calendar.google.com/calendar/render?${params}`,
+    "_blank",
+    "noopener"
+  );
+}
+
 // 달력 + D-day. D-day는 "오늘" 기준이라 클라이언트에서 계산.
+// 날짜 계산은 전부 한국시간 기준(lib/wedding-time) — 해외 하객 폰에서도 같은 값이 나온다.
 export default function Calendar({
   data,
   theme,
+  names,
+  event,
 }: {
   data: CalendarData;
   theme: Theme;
+  names: [string, string]; // D-day 문구의 "인혁❤재은"
+  event: CalendarEvent;
 }) {
   const [dday, setDday] = useState<number | null>(null);
   const [remaining, setRemaining] = useState<Remaining | null>(null);
 
   useEffect(() => {
-    const target = new Date(data.year, data.month - 1, data.day);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const diff = Math.ceil(
-      (target.getTime() - today.getTime()) / 86_400_000
-    );
     // 오늘 기준 D-day는 브라우저에서만 계산(하이드레이션 안전). 마운트 후 1회 setState — 의도된 패턴.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setDday(diff);
-  }, [data.year, data.month, data.day]);
+    setDday(ddayKST(data));
+  }, [data]);
 
   useEffect(() => {
-    const target = new Date(
-      data.year,
-      data.month - 1,
-      data.day,
-      data.hour,
-      data.minute
-    );
+    const target = weddingStart(data);
     function tick() {
-      setRemaining(getRemaining(target));
+      const r = getRemaining(target);
+      setRemaining(r);
+      // 예식 시각이 지나면 더 셀 게 없다
+      if (!r) clearInterval(id);
     }
-    tick();
     const id = setInterval(tick, 1000);
+    tick();
     return () => clearInterval(id);
-  }, [data.year, data.month, data.day, data.hour, data.minute]);
+  }, [data]);
 
   // 달력 그리드 계산 (순수 계산 — 서버/클라 동일)
   const firstDay = new Date(data.year, data.month - 1, 1).getDay(); // 0=일
@@ -138,7 +164,7 @@ export default function Calendar({
           {WEEK.map((w, i) => (
             <div
               key={w}
-              className={`font-body ${i === 0 ? "text-accent" : "text-muted"}`}
+              className={`font-body ${i === 0 ? "text-heart-ink" : "text-muted"}`}
             >
               {w}
             </div>
@@ -165,7 +191,7 @@ export default function Calendar({
                   <span className="relative flex h-8 w-8 items-center justify-center">
                     <Heart className="absolute inset-0 h-8 w-8 text-heart" />
                     {/* 하트는 아래로 뾰족해 무게중심이 위에 있다 → 숫자를 1px 올려야 가운데로 보인다 */}
-                    <span className="relative -translate-y-px font-body text-[13px] font-semibold text-white">
+                    <span className="relative -translate-y-px font-body text-sm font-semibold text-white">
                       {d}
                     </span>
                   </span>
@@ -178,7 +204,7 @@ export default function Calendar({
                 {d && (
                   <span
                     className={`flex h-8 w-8 items-center justify-center rounded-full font-body ${
-                      isSunday ? "text-heart" : "text-body"
+                      isSunday ? "text-heart-ink" : "text-body"
                     }`}
                   >
                     {d}
@@ -200,11 +226,15 @@ export default function Calendar({
             >
               {dday > 0 ? (
                 <>
-                  인혁<span className="text-heart">❤</span>재은 결혼식까지{" "}
-                  <span className="font-semibold text-accent">D-{dday}</span>
+                  {names[0]}
+                  <span className="text-heart">❤</span>
+                  {names[1]} 결혼식까지{" "}
+                  <span className="font-semibold text-accent-ink">D-{dday}</span>
                 </>
               ) : dday === 0 ? (
-                <span className="font-semibold text-accent">D-DAY</span>
+                <span className="font-semibold text-accent-ink">
+                  D-DAY · 오늘 결혼합니다
+                </span>
               ) : (
                 <>결혼한 지 {-dday}일</>
               )}
@@ -228,12 +258,34 @@ export default function Calendar({
                 <p className="font-display text-2xl tabular-nums text-accent">
                   {String(unit.value).padStart(2, "0")}
                 </p>
-                <p className="mt-0.5 font-body text-[11px] text-muted">
+                <p className="mt-0.5 font-body text-[13px] text-muted">
                   {unit.label}
                 </p>
               </div>
             ))}
           </div>
+        )}
+
+        {(dday === null || dday >= 0) && (
+          <button
+            onClick={() => addToCalendar(data, event)}
+            className="mt-6 inline-flex min-h-11 items-center gap-1.5 rounded-full border border-hairline bg-white px-5 font-body text-sm text-body"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+              className="h-4 w-4 text-muted"
+            >
+              <rect x="3.5" y="5" width="17" height="15" rx="2" />
+              <path d="M3.5 10h17M8 3v4M16 3v4" />
+            </svg>
+            내 캘린더에 저장
+          </button>
         )}
       </div>
     </Section>
