@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     description: share.description,
     url: share.siteUrl,
     siteName: share.title,
-    // 실제 파일 크기와 맞춰야 카톡 미리보기가 잘리지 않는다.
-    // TODO: OG 이미지 교체 시 1200×630 으로 만들고 이 값도 바꾼 뒤 카카오 캐시 초기화
-    images: [{ url: share.ogImage, width: 1376, height: 768 }],
+    // 실제 파일 크기와 맞춰야 카톡 미리보기가 잘리지 않는다 (1200×630 권장 비율).
+    // 이미지를 바꾸면 이 값도 맞추고, 파일명을 바꾸거나 카카오 캐시를 초기화한다
+    images: [{ url: share.ogImage, width: 1200, height: 630 }],
     locale: "ko_KR",
     type: "website",
   },
@@ -58,7 +58,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko" className={`${gowunDodum.variable} h-full antialiased`}>
+    // suppressHydrationWarning — 아래 스크립트가 React 보다 먼저 <html> 에 'js' 클래스를
+    // 붙이므로 서버 HTML 과 className 이 달라지는 게 정상이다. <html> 속성에만 적용된다
+    <html
+      lang="ko"
+      className={`${gowunDodum.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <head>
         {/* 한글 본문 폰트 Pretendard (React가 head로 hoist).
             preconnect 로 CDN 연결을 미리 열어 폰트가 늦게 바뀌는 깜빡임을 줄인다 */}

@@ -17,6 +17,9 @@ export type IntroData = {
   dateText: string; // 예: "2026. 12. 13. SUN 1:30 PM"
   placeText: string; // 예: "○○웨딩홀 3F 그랜드홀"
   mainPhoto: string; // 예: "/images/main.jpg"
+  // 폰 화면에 꽉 채우면 좌우가 잘린다. 사진의 어느 지점을 가운데에 둘지 (CSS object-position).
+  // 예: "60% center" = 가로 60% 지점 기준. 없으면 정가운데.
+  mainPhotoPosition?: string;
 };
 
 // 혼주(양가 부모) 한 줄. 부모 성함 + "의 아들/딸 신랑/신부명".
