@@ -77,7 +77,6 @@ export type AccountEntry = {
 // 신랑측 / 신부측 묶음.
 export type AccountSide = {
   label: string; // "신랑측" | "신부측"
-  tone?: "groom" | "bride"; // 라벨 칸 배경색. 없으면 무채색으로 나온다
   accounts: AccountEntry[];
 };
 

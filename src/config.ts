@@ -96,7 +96,6 @@ export const config: InvitationConfig = {
     sides: [
       {
         label: "신랑측",
-        tone: "groom",
         accounts: [
           { relation: "신랑", name: "장인혁", bank: "우리은행", number: "1002-265-571220" },
           { relation: "아버지", name: "장면섭", bank: "농협은행", number: "243030-52-055353" },
@@ -104,7 +103,6 @@ export const config: InvitationConfig = {
       },
       {
         label: "신부측",
-        tone: "bride",
         accounts: [
           { relation: "신부", name: "박재은", bank: "신한은행", number: "110-430-448828" },
           { relation: "아버지", name: "박민규", bank: "농협은행", number: "356-0489-8581-63" },

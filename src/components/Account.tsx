@@ -49,17 +49,10 @@ function AccountRow({ a }: { a: AccountEntry }) {
   );
 }
 
-// 라벨 칸 배경색. 클래스명을 문자열로 조립하면 Tailwind 가 스캔에서 놓치므로
-// 완성된 클래스명을 그대로 적어 둔다.
-const TONE = {
-  groom: "bg-groom text-groom-ink",
-  bride: "bg-bride text-bride-ink",
-  none: "bg-canvas text-ink",
-} as const;
-
 // 신랑측 / 신부측 한 묶음. 라벨 버튼을 눌러야 계좌가 펼쳐진다 —
 // 계좌번호가 처음부터 전부 펼쳐져 있으면 섹션이 길고 부담스럽게 보인다.
-// 여닫는 방식은 오시는 길의 교통 안내(Location.tsx FoldableInfo)와 같다.
+// 여닫는 방식과 버튼 모양(흰 배경·글꼴·화살표)은 오시는 길의 교통 안내
+// (Location.tsx FoldableInfo)와 똑같이 맞춘다 — 페이지 안의 펼침 버튼이 한 가지로 보이게.
 function SideCard({ side }: { side: AccountSide }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
@@ -70,9 +63,7 @@ function SideCard({ side }: { side: AccountSide }) {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls={panelId}
-        className={`flex min-h-12 w-full items-center justify-between px-4 font-body text-base font-semibold ${
-          TONE[side.tone ?? "none"]
-        }`}
+        className="flex min-h-12 w-full items-center justify-between px-4 font-body text-base text-ink"
       >
         {side.label} 계좌번호
         <svg
@@ -83,7 +74,9 @@ function SideCard({ side }: { side: AccountSide }) {
           strokeLinecap="round"
           strokeLinejoin="round"
           aria-hidden
-          className={`h-5 w-5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          className={`h-5 w-5 text-muted transition-transform duration-300 ${
+            open ? "rotate-180" : ""
+          }`}
         >
           <path d="M6 9l6 6 6-6" />
         </svg>
