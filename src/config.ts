@@ -16,7 +16,9 @@ export const config: InvitationConfig = {
     brideName: "박재은",
     dateText: "2026년 12월 13일 일요일 오후 1시 30분",
     placeText: "더뉴컨벤션 웨딩홀 5층 제니스홀",
-    mainPhoto: "/images/main.jpg", // TODO: 실제 메인 사진으로 교체
+    mainPhoto: "/images/main.jpg",
+    // 두 사람이 사진 가로 50~75% 지점에 있어서 오른쪽으로 살짝 당긴다
+    mainPhotoPosition: "60% center",
   },
   invitation: {
     greeting: [

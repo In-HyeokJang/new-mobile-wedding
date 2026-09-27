@@ -58,7 +58,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko" className={`${gowunDodum.variable} h-full antialiased`}>
+    // suppressHydrationWarning — 아래 스크립트가 React 보다 먼저 <html> 에 'js' 클래스를
+    // 붙이므로 서버 HTML 과 className 이 달라지는 게 정상이다. <html> 속성에만 적용된다
+    <html
+      lang="ko"
+      className={`${gowunDodum.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <head>
         {/* 한글 본문 폰트 Pretendard (React가 head로 hoist).
             preconnect 로 CDN 연결을 미리 열어 폰트가 늦게 바뀌는 깜빡임을 줄인다 */}

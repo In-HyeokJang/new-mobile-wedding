@@ -20,6 +20,7 @@ export default function Intro({ data, theme }: { data: IntroData; theme: Theme }
           // 100vw 로 두면 PC 에서 쓸데없이 큰 원본을 받아온다
           sizes="(max-width: 430px) 100vw, 430px"
           className="object-cover"
+          style={{ objectPosition: data.mainPhotoPosition ?? "center" }}
         />
 
         {/* 아래에 내용이 더 있다는 신호. 사진이 화면을 꽉 채우면
