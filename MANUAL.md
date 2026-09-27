@@ -33,7 +33,7 @@
 | 인사말, 양가 혼주 | `invitation` |
 | 달력 날짜/시간 | `calendar` |
 | 갤러리 사진 경로 | `gallery.photos` |
-| 교통·주차·식사 안내, 예식장 문의 | `location.transport` |
+| 교통·주차 안내 (버튼으로 접힘 — `collapsible`) | `location.transport` |
 | 계좌 | `account` |
 | 맨 아래 감사 인사 | `closing` |
 | 카톡 공유 제목/설명/도메인 | `share` |
@@ -62,9 +62,8 @@
 
 ## 🔧 교체 예정 (TODO) — 실제 값/파일로 바꿀 것
 
-- [ ] 갤러리 사진 `public/images/gallery-1~6.jpg` (3~6번 숫자 플레이스홀더)
+- [ ] 갤러리 사진 `public/images/gallery-1~6.jpg` (4~6번 숫자 플레이스홀더)
 - [ ] 계좌번호 (`account` — 신랑 아버지·신부·신부 부모님이 `000-0000-0000` 임시값)
-- [ ] 연회장 층수 (`location.transport` "식사 안내"의 "아래층" → 4층/3층, 예식 1주일 전 확정)
 
 ---
 

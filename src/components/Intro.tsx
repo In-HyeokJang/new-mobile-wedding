@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Reveal from "./Reveal";
-import type { IntroData, Theme } from "@/types";
+import type { IntroData } from "@/types";
 
 // 첫 화면은 사진 한 장으로만 채우고, 텍스트는 그 아래로 내린다.
 // (예전에는 사진 위에 텍스트를 얹었지만 사진이 가려져서 분리했다)
 // 서버 컴포넌트(상호작용 없음). config 대신 props 주입 → 빌더 재사용 대비.
-export default function Intro({ data, theme }: { data: IntroData; theme: Theme }) {
+export default function Intro({ data }: { data: IntroData }) {
   return (
     <>
       {/* 화면 가장자리에서 살짝 띄운 둥근 카드. 위·좌우 여백은 같은 폭(0.75rem)이고,
@@ -56,11 +56,26 @@ export default function Intro({ data, theme }: { data: IntroData; theme: Theme }
         <section className="px-8 pt-14 pb-12 text-center">
           <h1 className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 break-keep font-display text-2xl leading-tight tracking-tight text-ink min-[380px]:text-[1.75rem]">
             <span className="whitespace-nowrap">{data.groomName}</span>
-            <span style={{ color: theme.accent }}>&amp;</span>
+            {/* 캘린더·맺음말과 같은 하트 색. 이모지(❤️)는 기기마다 모양이 달라 SVG 로 그린다 */}
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              role="img"
+              aria-label="하트"
+              className="h-[0.8em] w-[0.8em] shrink-0 text-heart"
+            >
+              <path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.8 4.5c2.2 0 3.9 1.3 5.2 3.1 1.3-1.8 3-3.1 5.2-3.1 3.8 0 5.9 3.9 4.4 7.3C19.5 16.4 12 21 12 21z" />
+            </svg>
             <span className="whitespace-nowrap">{data.brideName}</span>
           </h1>
-          <p className="mt-6 font-body text-base text-body">{data.dateText}</p>
-          <p className="mt-1.5 font-body text-base text-muted">{data.placeText}</p>
+          {/* break-keep — 줄이 넘치면 "30 / 분" 처럼 단어 중간이 아니라 띄어쓰기에서 끊는다.
+              320px 폰에서만 15px 로 줄여 한 줄에 들어가게 한다 */}
+          <p className="mt-6 break-keep font-body text-[15px] text-body min-[360px]:text-base">
+            {data.dateText}
+          </p>
+          <p className="mt-1.5 break-keep font-body text-[15px] text-muted min-[360px]:text-base">
+            {data.placeText}
+          </p>
         </section>
       </Reveal>
     </>
