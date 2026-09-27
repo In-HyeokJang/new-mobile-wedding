@@ -33,7 +33,7 @@
 | 인사말, 양가 혼주 | `invitation` |
 | 달력 날짜/시간 | `calendar` |
 | 갤러리 사진 경로 | `gallery.photos` |
-| 교통·주차·식사 안내, 예식장 문의 | `location.transport` |
+| 교통·주차 안내 (버튼으로 접힘 — `collapsible`) | `location.transport` |
 | 계좌 | `account` |
 | 맨 아래 감사 인사 | `closing` |
 | 카톡 공유 제목/설명/도메인 | `share` |
