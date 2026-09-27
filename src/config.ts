@@ -83,12 +83,18 @@ export const config: InvitationConfig = {
   },
   gallery: {
     photos: [
-      "/images/gallery-1.jpg",
-      "/images/gallery-2.jpg",
-      "/images/gallery-3.jpg",
-      "/images/gallery-4.jpg",
-      "/images/gallery-5.jpg",
-      "/images/gallery-6.jpg",
+      // 3열 그리드라 3장씩 한 줄. 처음 6장(2줄)만 보이고 나머지는 "더보기".
+      // 둘째 줄 앞 두 칸의 12·13 풍선 사진은 나란히 두어야 "12월 13일"로 읽힌다.
+      "/images/gallery-3.jpg", // 성당 앞 베일
+      "/images/gallery-4.jpg", // 언덕 위 춤
+      "/images/gallery-5.jpg", // 언덕에 앉아 손가락질
+      "/images/gallery-6.jpg", // 풍선 12 (신부)
+      "/images/gallery-7.jpg", // 풍선 13 (신랑)
+      "/images/gallery-1.jpg", // 시장 구경 (메인 사진과 같은 컷)
+      "/images/gallery-2.jpg", // 계단
+      "/images/gallery-8.jpg", // 언덕 위 춤 (다른 컷)
+      "/images/gallery-9.jpg", // 하늘 배경 베일
+      "/images/gallery-10.jpg", // 안아 올리기 — 마지막 컷
     ],
   },
   account: {
