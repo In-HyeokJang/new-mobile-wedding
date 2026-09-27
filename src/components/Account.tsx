@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import Section from "./Section";
 import { copyText } from "@/lib/clipboard";
 import type { AccountData, AccountEntry, AccountSide } from "@/types";
@@ -49,30 +49,53 @@ function AccountRow({ a }: { a: AccountEntry }) {
   );
 }
 
-// 라벨 칸 배경색. 클래스명을 문자열로 조립하면 Tailwind 가 스캔에서 놓치므로
-// 완성된 클래스명을 그대로 적어 둔다.
-const TONE = {
-  groom: "bg-groom text-groom-ink",
-  bride: "bg-bride text-bride-ink",
-  none: "bg-canvas text-ink",
-} as const;
-
-// 신랑측 / 신부측 한 묶음. 접지 않고 항상 펼쳐 둔다.
+// 신랑측 / 신부측 한 묶음. 라벨 버튼을 눌러야 계좌가 펼쳐진다 —
+// 계좌번호가 처음부터 전부 펼쳐져 있으면 섹션이 길고 부담스럽게 보인다.
+// 여닫는 방식과 버튼 모양(흰 배경·글꼴·화살표)은 오시는 길의 교통 안내
+// (Location.tsx FoldableInfo)와 똑같이 맞춘다 — 페이지 안의 펼침 버튼이 한 가지로 보이게.
 function SideCard({ side }: { side: AccountSide }) {
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+
   return (
     <div className="overflow-hidden rounded-xl border border-hairline bg-white">
-      <p
-        className={`border-b border-hairline px-4 py-3 font-body text-sm font-semibold ${
-          TONE[side.tone ?? "none"]
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="flex min-h-12 w-full items-center justify-between px-4 font-body text-base text-ink"
+      >
+        {side.label} 계좌번호
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+          className={`h-5 w-5 text-muted transition-transform duration-300 ${
+            open ? "rotate-180" : ""
+          }`}
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+      <div
+        id={panelId}
+        inert={!open}
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         }`}
       >
-        {side.label}
-      </p>
-      <ul className="px-4 pb-1">
-        {side.accounts.map((a, i) => (
-          <AccountRow key={i} a={a} />
-        ))}
-      </ul>
+        <div className="overflow-hidden">
+          <ul className="border-t border-hairline px-4 pb-1">
+            {side.accounts.map((a, i) => (
+              <AccountRow key={i} a={a} />
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
