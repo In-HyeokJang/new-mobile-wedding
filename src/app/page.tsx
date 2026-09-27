@@ -5,6 +5,7 @@ import Gallery from "@/components/Gallery";
 import Location from "@/components/Location";
 import Account from "@/components/Account";
 import Guestbook from "@/components/Guestbook";
+import Closing from "@/components/Closing";
 import BgmToggle from "@/components/BgmToggle";
 import Reveal from "@/components/Reveal";
 import { config } from "@/config";
@@ -12,6 +13,13 @@ import { config } from "@/config";
 // 섹션 배치(순서). config를 읽어 각 섹션에 props로 주입.
 // TODO: 하객 사진 업로드(포토 게스트북) 섹션을 방명록 뒤에 추가 예정.
 export default function Home() {
+  // D-day 문구·맺음말에 쓰는 짧은 이름 ("인혁", "재은")
+  const names: [string, string] = [
+    config.invitation.groom.childName,
+    config.invitation.bride.childName,
+  ];
+  const { intro, location } = config;
+
   return (
     // overflow-x-clip 을 쓴다. overflow-x:hidden 은 CSS 규칙상 반대 축(y)을
     // visible 로 둘 수 없어 auto 로 바꿔버리고, 그러면 이 main 이 스크롤 컨테이너가
@@ -25,7 +33,15 @@ export default function Home() {
         <Invitation data={config.invitation} />
       </Reveal>
       <Reveal>
-        <Calendar data={config.calendar} theme={config.theme} />
+        <Calendar
+          data={config.calendar}
+          theme={config.theme}
+          names={names}
+          event={{
+            title: `${intro.groomName} ♥ ${intro.brideName} 결혼식`,
+            location: `${location.name} ${location.hallText}, ${location.address}`,
+          }}
+        />
       </Reveal>
       <Reveal>
         <Gallery data={config.gallery} />
@@ -38,6 +54,9 @@ export default function Home() {
       </Reveal>
       <Reveal>
         <Guestbook />
+      </Reveal>
+      <Reveal>
+        <Closing data={config.closing} share={config.share} names={names} />
       </Reveal>
 
       {/* 화면에 고정되는 버튼이라 Reveal 로 감싸면 안 된다 (transform 이 fixed 를 깬다) */}

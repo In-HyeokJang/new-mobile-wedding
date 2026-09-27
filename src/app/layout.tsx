@@ -4,13 +4,14 @@ import ContentGuard from "@/components/ContentGuard";
 import { config } from "@/config";
 import "./globals.css";
 
-// 모바일 기기(실기기) 접속 시 정확한 너비 인식 및 축소/확대 방지 메타데이터
+// 모바일 기기(실기기) 접속 시 정확한 너비 인식.
+// 확대(핀치 줌)는 막지 않는다 — 어르신 하객이 계좌번호·버스 번호·사진을 키워 본다.
+// 입력창 포커스 때 iOS 자동 확대는 입력 글씨를 16px 로 둬서 막는다(Guestbook.tsx).
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
+  themeColor: config.theme.canvas,
 };
 
 // next/font: 빌드 시 폰트를 자체 호스팅하고 CSS 변수(--font-gowun-dodum)로 노출.
@@ -39,7 +40,9 @@ export const metadata: Metadata = {
     description: share.description,
     url: share.siteUrl,
     siteName: share.title,
-    images: [{ url: share.ogImage, width: 1200, height: 630 }],
+    // 실제 파일 크기와 맞춰야 카톡 미리보기가 잘리지 않는다.
+    // TODO: OG 이미지 교체 시 1200×630 으로 만들고 이 값도 바꾼 뒤 카카오 캐시 초기화
+    images: [{ url: share.ogImage, width: 1376, height: 768 }],
     locale: "ko_KR",
     type: "website",
   },
@@ -57,7 +60,9 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${gowunDodum.variable} h-full antialiased`}>
       <head>
-        {/* 한글 본문 폰트 Pretendard (React가 head로 hoist) */}
+        {/* 한글 본문 폰트 Pretendard (React가 head로 hoist).
+            preconnect 로 CDN 연결을 미리 열어 폰트가 늦게 바뀌는 깜빡임을 줄인다 */}
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="" />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"

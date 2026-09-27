@@ -8,8 +8,9 @@ import type { IntroData, Theme } from "@/types";
 export default function Intro({ data, theme }: { data: IntroData; theme: Theme }) {
   return (
     <>
-      {/* 1) 첫 화면 — 사진만. h-[100svh] 는 모바일 주소창 높이 변화를 반영한다 */}
-      <section className="relative h-[100svh] w-full overflow-hidden bg-ink">
+      {/* 1) 첫 화면 — 사진만. h-screen-intro(100svh)는 모바일 주소창 높이 변화를 반영한다.
+          svh 를 모르는 구형 브라우저는 100vh 로 폴백(globals.css) — 폴백이 없으면 높이 0 이 돼 사진이 사라진다 */}
+      <section className="h-screen-intro relative w-full overflow-hidden bg-ink">
         <Image
           src={data.mainPhoto}
           alt={`${data.groomName} & ${data.brideName}`}
@@ -49,8 +50,8 @@ export default function Intro({ data, theme }: { data: IntroData; theme: Theme }
             <span style={{ color: theme.accent }}>&amp;</span>
             <span className="whitespace-nowrap">{data.brideName}</span>
           </h1>
-          <p className="mt-6 font-body text-sm text-body">{data.dateText}</p>
-          <p className="mt-1.5 font-body text-sm text-muted">{data.placeText}</p>
+          <p className="mt-6 font-body text-base text-body">{data.dateText}</p>
+          <p className="mt-1.5 font-body text-base text-muted">{data.placeText}</p>
         </section>
       </Reveal>
     </>

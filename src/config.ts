@@ -13,9 +13,9 @@ export const config: InvitationConfig = {
   },
   intro: {
     groomName: "장인혁",
-    brideName: "박재은", // TODO: 신부 이름
-    dateText: "2026.12.13 일요일 오후 1시 30분",
-    placeText: "더뉴컨벤션 웨딩홀 제니스홀 5층",
+    brideName: "박재은",
+    dateText: "2026년 12월 13일 일요일 오후 1시 30분",
+    placeText: "더뉴컨벤션 웨딩홀 5층 제니스홀",
     mainPhoto: "/images/main.jpg", // TODO: 실제 메인 사진으로 교체
   },
   invitation: {
@@ -25,7 +25,6 @@ export const config: InvitationConfig = {
       "걸어갈 수 있는 큰 사랑으로 키우려 합니다.",
       "저희 두 사람의 시작을 축복해 주세요.",
     ],
-    // TODO: 실제 양가 부모님 성함/신부 이름
     groom: { fatherName: "장면섭", motherName: "김선숙", childRelation: "아들", childName: "인혁" },
     bride: { fatherName: "박민규", motherName: "정정아", childRelation: "딸", childName: "재은" },
   },
@@ -36,10 +35,12 @@ export const config: InvitationConfig = {
     hour: 13,
     minute: 30,
     timeText: "오후 1시 30분",
+    // 캘린더에 저장할 일정 길이 — 예식 13:30 ~ 식사 종료 15:00
+    durationMinutes: 90,
   },
   location: {
     name: "더뉴컨벤션 웨딩홀",
-    hallText: "제니스홀 5층",
+    hallText: "5층 제니스홀",
     address: "서울특별시 강서구 공항대로36길 57",
     // 버스 노선은 예식장 공식 홈페이지(thenewwed.kr/Location) 기준.
     // 주차는 공식 페이지에 안내가 없어 웨딩 정보 사이트들을 교차 확인한 값 →
@@ -73,6 +74,18 @@ export const config: InvitationConfig = {
           "주차 등록은 **1층 엘리베이터 앞**에서 해주세요.",
           "만차 시 길 건너 **이대서울병원** 주차장을 이용하실 수 있습니다.",
         ],
+      },
+      {
+        // TODO: 연회장 층수(4층 또는 3층)는 예식 1주일 전 예식장 안내 후 "**아래층**" 자리에 반영
+        label: "식사 안내",
+        lines: [
+          "연회장은 예식홀 **아래층**에 마련되어 있습니다.",
+          "예식 30분 전부터 2시간, **오후 1시 ~ 3시**까지 이용하실 수 있습니다.",
+        ],
+      },
+      {
+        label: "예식장 문의",
+        lines: ["더뉴컨벤션 웨딩홀 **1661-3303**"],
       },
     ],
   },
@@ -111,13 +124,19 @@ export const config: InvitationConfig = {
       },
     ],
   },
+  closing: {
+    lines: [
+      "저희 두 사람의 새로운 시작을",
+      "함께 축복해 주셔서 감사합니다.",
+    ],
+  },
   share: {
-    title: "인혁 ♥ 재은 결혼합니다", // TODO: 신부 이름
-    description: "2026년 12월 13일 일요일 오후 1시 30분 · 더뉴컨벤션 웨딩홀",
+    title: "인혁 ♥ 재은 결혼합니다",
+    description: "2026년 12월 13일 일요일 오후 1시 30분 · 더뉴컨벤션 웨딩홀 5층 제니스홀",
     ogImage: "/og-image.jpg",
     siteUrl: "https://jihpjemobilewedding.vercel.app",
   },
   bgm: {
-    src: "/music/bgm.mp3", // TODO: 저작권 프리 연주곡 파일 넣기
+    src: "/music/bgm.mp3", // 저작권 프리 연주곡
   },
 };

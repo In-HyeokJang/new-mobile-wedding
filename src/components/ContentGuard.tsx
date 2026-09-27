@@ -13,8 +13,11 @@ import { useEffect } from "react";
 // 그건 globals.css 의 -webkit-touch-callout: none 이 막는다.
 export default function ContentGuard() {
   useEffect(() => {
-    // 우클릭 + 모바일 롱프레스 컨텍스트 메뉴
-    const onContextMenu = (e: MouseEvent) => e.preventDefault();
+    // 우클릭 + 모바일 롱프레스 컨텍스트 메뉴 — 사진에서만 막는다.
+    // 페이지 전체를 막으면 안드로이드에서 계좌번호를 길게 눌러 복사하는 것까지 막힌다
+    const onContextMenu = (e: MouseEvent) => {
+      if (e.target instanceof HTMLImageElement) e.preventDefault();
+    };
 
     // 이미지 드래그해서 끌어내기
     const onDragStart = (e: DragEvent) => e.preventDefault();

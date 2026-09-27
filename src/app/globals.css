@@ -10,6 +10,11 @@
   --color-muted: #6c6a64;
   --color-hairline: #e6dfd8;
   --color-accent: #ff630f;
+  /* 작은 글씨용 accent. #ff630f 는 캔버스 대비 2.8:1 이라 12~14px 글씨로 쓰면
+     흐리게 읽힌다(기준 4.5:1). 글씨에는 이 짙은 톤(4.9:1)을, 면·장식에는 accent 를 쓴다 */
+  --color-accent-ink: #b4501a;
+  /* 방명록 오류 문구 — 주황(포인트색)과 구분되는 붉은색 */
+  --color-danger: #b42318;
 
   /* 마음 전하실 곳 — 신랑측/신부측 구분용.
      canvas(#faf9f5)가 따뜻한 색이라 쨍한 파랑/빨강은 혼자 튄다.
@@ -23,6 +28,8 @@
      둘이 따로 논다. 노란기가 살짝 도는 따뜻한 분홍으로 맞췄다 */
   --color-heart: #ff6b8a;
   --color-heart-soft: #ffb3c4;
+  /* 달력 일요일 숫자처럼 글씨로 쓰는 하트색 (대비 4.5:1) */
+  --color-heart-ink: #cc3d63;
 
   /* 고운돋움. 한글 글리프가 있으므로 제목이 시스템 서체로 폴백되지 않는다
      (이전 Fraunces 는 라틴 전용이라 한글 제목이 기기마다 다르게 나왔다) */
@@ -41,23 +48,38 @@ body {
 
 /* 사진 무단 저장을 한 단계 귀찮게 만드는 장치 (보안 아님 — ContentGuard.tsx 주석 참고).
    모바일에서 사진이 새는 경로는 대부분 '길게 눌러 이미지 저장' 이라
-   touch-callout 을 끄는 게 실질적으로 가장 효과가 크다. */
+   이미지의 touch-callout 을 끄는 게 실질적으로 가장 효과가 크다.
+   touch-callout 을 body 전체에 걸면 링크 길게 누르기 메뉴까지 막혀서 이미지에만 건다. */
 body {
-  -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
 }
 
-/* 방명록 입력란은 예외 — 선택/편집이 막히면 글을 못 쓴다 */
+/* 예외 — 방명록 입력란(선택/편집이 막히면 글을 못 쓴다)과
+   계좌번호·주소(.selectable: 복사 버튼이 막히는 인앱 브라우저에서 손으로 복사할 수 있게) */
 input,
-textarea {
+textarea,
+.selectable {
   -webkit-user-select: text;
   user-select: text;
 }
 
 img {
+  -webkit-touch-callout: none;
   -webkit-user-drag: none;
   user-select: none;
+}
+
+/* 화면 높이. svh/dvh 를 모르는 구형 브라우저(iOS 15.4 미만 등)는 뒤 선언을 버리고
+   앞의 vh 를 쓴다. Tailwind 클래스 두 개로는 선언 순서를 보장할 수 없어 여기 둔다 */
+.h-screen-intro {
+  height: 100vh;
+  height: 100svh;
+}
+
+.h-lightbox {
+  height: 80vh;
+  height: 80dvh;
 }
 
 /* 스크롤 등장 애니메이션 (Reveal.tsx).

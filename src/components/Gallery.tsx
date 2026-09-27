@@ -70,11 +70,13 @@ export default function Gallery({ data }: { data: GalleryData }) {
             className="relative aspect-square overflow-hidden"
             aria-label={`사진 ${i + 1} 크게 보기`}
           >
+            {/* 버튼에 aria-label 이 있으니 썸네일은 alt 를 비워 두 번 읽히지 않게 */}
             <Image
               src={src}
-              alt={`gallery ${i + 1}`}
+              alt=""
               fill
-              sizes="33vw"
+              // 본문이 430px 컬럼이라 PC 에서 33vw 면 셀(약 140px)보다 훨씬 큰 원본을 받는다
+              sizes="(max-width: 430px) 33vw, 140px"
               className="object-cover transition-transform duration-300 hover:scale-105"
             />
           </button>
@@ -109,6 +111,9 @@ export default function Gallery({ data }: { data: GalleryData }) {
 
       {open !== null && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="사진 크게 보기"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
           onClick={close}
           onTouchStart={(e) => setTouchX(e.touches[0].clientX)}
@@ -121,21 +126,24 @@ export default function Gallery({ data }: { data: GalleryData }) {
           }}
         >
           <div
-            className="relative h-[80vh] w-full max-w-md"
+            // h-lightbox = 80dvh (구형 브라우저는 80vh). vh 는 iOS 주소창에 가려진다
+            className="h-lightbox relative w-full max-w-md"
             onClick={(e) => e.stopPropagation()}
           >
             <Image
               src={photos[open]}
-              alt={`gallery ${open + 1}`}
+              alt={`웨딩 사진 ${open + 1} / ${photos.length}`}
               fill
-              sizes="100vw"
+              sizes="(max-width: 448px) 100vw, 448px"
               className="object-contain"
             />
           </div>
 
           <button
             onClick={close}
-            className="absolute right-4 top-4 text-2xl text-white"
+            className="absolute right-2 flex h-12 w-12 items-center justify-center text-2xl text-white"
+            // 노치/다이내믹 아일랜드 아래로
+            style={{ top: "calc(0.5rem + env(safe-area-inset-top))" }}
             aria-label="닫기"
           >
             ✕
@@ -160,7 +168,10 @@ export default function Gallery({ data }: { data: GalleryData }) {
           >
             ›
           </button>
-          <p className="absolute bottom-5 left-1/2 -translate-x-1/2 font-body text-sm text-white/70">
+          <p
+            className="absolute left-1/2 -translate-x-1/2 font-body text-sm text-white/70"
+            style={{ bottom: "calc(1.25rem + env(safe-area-inset-bottom))" }}
+          >
             {open + 1} / {photos.length}
           </p>
         </div>

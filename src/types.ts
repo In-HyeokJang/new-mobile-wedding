@@ -40,6 +40,7 @@ export type CalendarData = {
   hour: number; // 0-23, 예식 정확한 시각 (실시간 카운트다운 계산용)
   minute: number; // 0-59
   timeText: string; // 예: "오후 1시 30분"
+  durationMinutes: number; // 캘린더 저장 시 일정 길이 (예식 + 식사)
 };
 
 export type GalleryData = { photos: string[] };
@@ -96,6 +97,11 @@ export type ShareData = {
   siteUrl: string; // 배포 도메인 (OG 절대경로 기준)
 };
 
+// 맺음말 + 공유 버튼 (페이지 맨 끝)
+export type ClosingData = {
+  lines: string[]; // 감사 인사 (줄 단위)
+};
+
 // 배경음악
 export type BgmData = {
   src: string; // 예: "/music/bgm.mp3"
@@ -109,6 +115,7 @@ export type InvitationConfig = {
   gallery: GalleryData;
   location: LocationData;
   account: AccountData;
+  closing: ClosingData;
   share: ShareData;
   bgm: BgmData;
 };
