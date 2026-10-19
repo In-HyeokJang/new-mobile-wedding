@@ -50,12 +50,17 @@ export default function Gallery({ data }: { data: GalleryData }) {
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
     };
+    // iOS Safari 는 touch-action 만으로는 핀치 줌이 새는 경우가 있어
+    // 전용 gesture 이벤트까지 막는다 (라이트박스가 열려 있는 동안만).
+    const blockGesture = (e: Event) => e.preventDefault();
     window.addEventListener("popstate", onPopState);
     window.addEventListener("keydown", onKey);
+    document.addEventListener("gesturestart", blockGesture);
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("popstate", onPopState);
       window.removeEventListener("keydown", onKey);
+      document.removeEventListener("gesturestart", blockGesture);
     };
   }, [isOpen, close, prev, next]);
 
@@ -114,7 +119,9 @@ export default function Gallery({ data }: { data: GalleryData }) {
           role="dialog"
           aria-modal="true"
           aria-label="사진 크게 보기"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+          // touch-none: 확대된 사진을 손가락으로 더 키우는 핀치/더블탭 줌 차단.
+          // 스와이프는 터치 이벤트로 직접 계산하니 영향 없다.
+          className="fixed inset-0 z-50 flex touch-none items-center justify-center bg-black/90"
           onClick={close}
           onTouchStart={(e) => setTouchX(e.touches[0].clientX)}
           onTouchEnd={(e) => {
