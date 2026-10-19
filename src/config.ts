@@ -105,6 +105,7 @@ export const config: InvitationConfig = {
         accounts: [
           { relation: "신랑", name: "장인혁", bank: "우리은행", number: "1002-265-571220" },
           { relation: "아버지", name: "장면섭", bank: "농협은행", number: "243030-52-055353" },
+          { relation: "어머니", name: "김선숙", bank: "농협은행", number: "243030-52-054027" },
         ],
       },
       {
