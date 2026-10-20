@@ -70,11 +70,16 @@ function Emphasized({ text }: { text: string }) {
   );
 }
 
+// break-keep: 폰 폭이 달라도 "도보 2 / 분" 처럼 단어 중간이 아니라 띄어쓰기에서만 줄바꿈.
+// text-pretty: 마지막 줄에 한두 글자만 덜렁 남는 것을 피한다.
 function InfoLines({ lines }: { lines: string[] }) {
   return (
-    <div className="space-y-1">
+    <div className="space-y-2">
       {lines.map((line, i) => (
-        <p key={i} className="font-body text-sm leading-relaxed text-body">
+        <p
+          key={i}
+          className="break-keep text-pretty font-body text-sm leading-relaxed text-body"
+        >
           <Emphasized text={line} />
         </p>
       ))}

@@ -50,7 +50,12 @@ export const config: InvitationConfig = {
       {
         label: "지하철 이용 시",
         collapsible: true,
-        lines: ["5호선 **발산역 7번 출구**, 도보 2분"],
+        lines: [
+          "**5호선 발산역**에서 내려 **7번 출구**로 나와 주세요.",
+          "출구에서 걸어서 약 **2분** 거리이며, **이대서울병원 옆 건물**이 예식장입니다.",
+          "건물 안으로 들어오셔서 **5층 제니스홀**로 올라오시면 됩니다.",
+          "처음 오시는 분은 위 지도 버튼(카카오맵·네이버지도·티맵)의 **도보 길찾기**를 이용하시면 편합니다.",
+        ],
       },
       {
         label: "버스 이용 시",
@@ -86,13 +91,13 @@ export const config: InvitationConfig = {
       // 3열 그리드라 3장씩 한 줄. 처음 6장(2줄)만 보이고 나머지는 "더보기".
       // 둘째 줄 앞 두 칸의 12·13 풍선 사진은 나란히 두어야 "12월 13일"로 읽힌다.
       // 주석(//)으로 막아 둔 사진은 잠시 숨김 — 앞의 // 만 지우면 다시 보인다.
-      "/images/gallery-3.jpg", // 성당 앞 베일
-      // "/images/gallery-4.jpg", // 언덕 위 춤
-      // "/images/gallery-5.jpg", // 언덕에 앉아 손가락질
-      // "/images/gallery-6.jpg", // 풍선 12 (신부)
-      // "/images/gallery-7.jpg", // 풍선 13 (신랑)
-      "/images/gallery-1.jpg", // 시장 구경 (메인 사진과 같은 컷)
-      "/images/gallery-2.jpg", // 계단
+      "/images/gallery-1.png", // 풍선 12 (신부)
+      "/images/gallery-2.png", // 풍선 13 (신랑)
+      "/images/gallery-3.png", // 언덕에 앉아 손가락질
+      "/images/gallery-4.jpg", // 성당 앞 베일
+      "/images/gallery-5.jpg", // 계단
+      "/images/gallery-6.jpg", // 시장 구경 (메인 사진과 같은 컷)
+      // "/images/gallery-7.jpg", // (미확인)
       // "/images/gallery-8.jpg", // 언덕 위 춤 (다른 컷)
       // "/images/gallery-9.jpg", // 하늘 배경 베일
       // "/images/gallery-10.jpg", // 안아 올리기 — 마지막 컷
