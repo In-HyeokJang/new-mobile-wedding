@@ -87,12 +87,12 @@ export const config: InvitationConfig = {
       // 둘째 줄 앞 두 칸의 12·13 풍선 사진은 나란히 두어야 "12월 13일"로 읽힌다.
       // 주석(//)으로 막아 둔 사진은 잠시 숨김 — 앞의 // 만 지우면 다시 보인다.
       "/images/gallery-3.jpg", // 성당 앞 베일
-      // "/images/gallery-4.jpg", // 언덕 위 춤
-      // "/images/gallery-5.jpg", // 언덕에 앉아 손가락질
-      // "/images/gallery-6.jpg", // 풍선 12 (신부)
-      // "/images/gallery-7.jpg", // 풍선 13 (신랑)
-      "/images/gallery-1.jpg", // 시장 구경 (메인 사진과 같은 컷)
-      "/images/gallery-2.jpg", // 계단
+      "/images/gallery-4.jpg", // 계단
+      "/images/gallery-5.png", // 언덕에 앉아 손가락질
+      "/images/gallery-1.png", // 풍선 12 (신부)
+      "/images/gallery-2.png", // 풍선 13 (신랑)
+      "/images/gallery-6.jpg", // 시장 구경 (메인 사진과 같은 컷)
+      // "/images/gallery-7.jpg", // (미확인)
       // "/images/gallery-8.jpg", // 언덕 위 춤 (다른 컷)
       // "/images/gallery-9.jpg", // 하늘 배경 베일
       // "/images/gallery-10.jpg", // 안아 올리기 — 마지막 컷
