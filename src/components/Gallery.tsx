@@ -88,6 +88,11 @@ export default function Gallery({ data }: { data: GalleryData }) {
         ))}
       </div>
 
+      {/* 사진 촬영 크레딧. 그리드 오른쪽 끝에 붙여 사진의 일부처럼 보이게 한다 */}
+      <p className="mt-2 text-right font-body text-[11px] text-muted">
+        Photo by 장모님
+      </p>
+
       {hasMore && (
         <button
           onClick={() => setExpanded((v) => !v)}
