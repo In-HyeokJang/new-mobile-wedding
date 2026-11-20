@@ -174,7 +174,9 @@ export default function Location({ data }: { data: LocationData }) {
   useEffect(() => {
     if (!coords || !mapRef.current) return;
     const center = new window.kakao.maps.LatLng(coords.lat, coords.lng);
-    const map = new window.kakao.maps.Map(mapRef.current, { center, level: 3 });
+    // level 은 숫자가 클수록 넓게(멀리) 보인다. 한 단계 올릴 때마다 보이는 범위가 2배.
+    // 3 이면 발산역이 화면 밖이라 4 로 넓혔다. 그래도 안 보이면 5.
+    const map = new window.kakao.maps.Map(mapRef.current, { center, level: 4 });
     // 페이지를 스크롤하다 지도에 손가락이 닿으면 지도만 움직여 스크롤이 막힌다.
     // 위치 확인용 고정 지도로 두고, 길찾기는 아래 지도 앱 버튼으로 넘긴다
     map.setDraggable(false);
