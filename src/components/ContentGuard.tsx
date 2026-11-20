@@ -23,6 +23,8 @@ export default function ContentGuard() {
     const onDragStart = (e: DragEvent) => e.preventDefault();
 
     const onKeyDown = (e: KeyboardEvent) => {
+      // 크롬 자동완성(저장된 이름 등 선택)은 key 가 없는 keydown 을 보낸다 → 그냥 무시
+      if (typeof e.key !== "string") return;
       const k = e.key.toUpperCase();
 
       // F12

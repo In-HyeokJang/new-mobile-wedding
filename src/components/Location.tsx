@@ -227,11 +227,14 @@ export default function Location({ data }: { data: LocationData }) {
           <p className="mt-1 font-body text-sm text-muted">
             {data.name} · {data.hallText}
           </p>
+        </div>
 
-          <div
-            ref={mapRef}
-            className="mt-6 h-56 w-full overflow-hidden rounded-2xl border border-hairline bg-white"
-          >
+        {/* 지도는 글씨 영역(max-w-xs)을 벗어나 화면 좌우 끝까지 꽉 채운다.
+            Section 의 좌우 여백(px-8)을 -mx-8 로 상쇄하는 방식 */}
+        <div
+          ref={mapRef}
+          className="-mx-8 mt-6 h-72 overflow-hidden bg-white"
+        >
             {mapFailed && !coords && (
               <div className="flex h-full items-center justify-center px-6 font-body text-sm leading-relaxed text-muted">
                 지도를 불러오지 못했습니다.
@@ -239,8 +242,9 @@ export default function Location({ data }: { data: LocationData }) {
                 아래 지도 앱 버튼으로 확인해 주세요.
               </div>
             )}
-          </div>
+        </div>
 
+        <div className="mx-auto max-w-xs">
           <p className="selectable mt-4 font-body text-base text-body">{data.address}</p>
 
           <button
