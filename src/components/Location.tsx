@@ -7,13 +7,23 @@ import { copyText } from "@/lib/clipboard";
 import type { LocationData, TransportInfo } from "@/types";
 
 type KakaoLatLng = { getLat(): number; getLng(): number };
+type KakaoLatLngBounds = { extend(latlng: KakaoLatLng): void };
 type KakaoMap = {
   setDraggable(draggable: boolean): void;
   setZoomable(zoomable: boolean): void;
+  // 두 지점이 다 들어오게 확대 단계·중심을 자동으로 맞춘다. 숫자는 가장자리 여백(px).
+  setBounds(
+    bounds: KakaoLatLngBounds,
+    paddingTop?: number,
+    paddingRight?: number,
+    paddingBottom?: number,
+    paddingLeft?: number
+  ): void;
 };
 type KakaoMarker = unknown;
 type KakaoGeocodeResult = { x: string; y: string };
 type KakaoGeocoderStatus = "OK" | "ZERO_RESULT" | "ERROR";
+type KakaoPlace = { place_name: string; x: string; y: string };
 
 declare global {
   interface Window {
@@ -26,7 +36,23 @@ declare global {
           options: { center: KakaoLatLng; level: number }
         ) => KakaoMap;
         Marker: new (options: { position: KakaoLatLng; map: KakaoMap }) => KakaoMarker;
+        LatLngBounds: new () => KakaoLatLngBounds;
+        // 지도 위에 직접 만든 HTML(이름표 등)을 띄우는 기능.
+        // yAnchor: 1 이면 content 의 아래쪽 끝이 position 에 붙는다(0.5 면 가운데).
+        CustomOverlay: new (options: {
+          position: KakaoLatLng;
+          content: HTMLElement;
+          map: KakaoMap;
+          yAnchor?: number;
+        }) => unknown;
         services: {
+          Places: new () => {
+            keywordSearch(
+              keyword: string,
+              callback: (result: KakaoPlace[], status: KakaoGeocoderStatus) => void,
+              options?: { location?: KakaoLatLng; radius?: number }
+            ): void;
+          };
           Geocoder: new () => {
             addressSearch(
               address: string,
@@ -50,6 +76,28 @@ const TMAP_STORE = {
   ios: "https://apps.apple.com/kr/app/id431589174",
   android: "https://play.google.com/store/apps/details?id=com.skt.tmap.ku",
 };
+
+// 지도에 함께 표시할 지하철 출구. 카카오 장소 검색 결과 중 이름에
+// mustInclude 가 들어간 첫 장소를 쓴다 ("발산역 7번출구" 처럼 붙여 쓰는 경우도 있어 숫자로만 거른다)
+const STATION_EXIT = {
+  keyword: "발산역 7번 출구",
+  mustInclude: "7번",
+  label: "발산역 7번 출구",
+};
+
+// 지도 위 이름표. CustomOverlay 는 DOM 요소를 받는다.
+// innerHTML 대신 textContent 로 글자를 넣어, 검색 결과 문자열이 HTML 로 해석될 일이 없게 한다.
+// 클래스는 Tailwind 그대로 — 지도 안 요소도 같은 페이지라 globals.css 가 적용된다.
+function mapLabel(text: string, kind: "venue" | "station"): HTMLElement {
+  const el = document.createElement("div");
+  el.textContent = text;
+  el.className =
+    kind === "venue"
+      ? // 핀(약 35px) 위로 띄우려고 mb-11
+        "mb-11 whitespace-nowrap rounded-full bg-accent-ink px-3 py-1.5 font-body text-[13px] font-semibold text-white shadow-md"
+      : "whitespace-nowrap rounded-full border border-hairline bg-white px-2.5 py-1 font-body text-xs font-semibold text-ink shadow";
+  return el;
+}
 
 // config 문구 안의 **...** 를 굵게 렌더링.
 // 마크다운 파서를 붙이기엔 과하고 필요한 건 강조 하나뿐이라 최소한만 처리한다.
@@ -174,15 +222,51 @@ export default function Location({ data }: { data: LocationData }) {
   useEffect(() => {
     if (!coords || !mapRef.current) return;
     const center = new window.kakao.maps.LatLng(coords.lat, coords.lng);
+    const { maps } = window.kakao;
     // level 은 숫자가 클수록 넓게(멀리) 보인다. 한 단계 올릴 때마다 보이는 범위가 2배.
-    // 3 이면 발산역이 화면 밖이라 4 로 넓혔다. 그래도 안 보이면 5.
-    const map = new window.kakao.maps.Map(mapRef.current, { center, level: 4 });
+    // 아래에서 역을 찾으면 setBounds 가 다시 맞추므로, 이 값은 역을 못 찾았을 때의 기본값.
+    const map = new maps.Map(mapRef.current, { center, level: 4 });
     // 페이지를 스크롤하다 지도에 손가락이 닿으면 지도만 움직여 스크롤이 막힌다.
     // 위치 확인용 고정 지도로 두고, 길찾기는 아래 지도 앱 버튼으로 넘긴다
     map.setDraggable(false);
     map.setZoomable(false);
-    new window.kakao.maps.Marker({ position: center, map });
-  }, [coords]);
+
+    // 예식장: 기본 핀 + 핀 위에 이름표
+    new maps.Marker({ position: center, map });
+    new maps.CustomOverlay({
+      position: center,
+      content: mapLabel(data.name, "venue"),
+      map,
+      yAnchor: 1,
+    });
+
+    // 발산역 7번 출구를 카카오 장소 검색으로 찾아 표시하고,
+    // 예식장과 출구가 한 화면에 다 들어오게 확대 단계를 자동으로 맞춘다.
+    // 못 찾으면(검색 실패 등) 위의 기본 지도 그대로 둔다
+    new maps.services.Places().keywordSearch(
+      STATION_EXIT.keyword,
+      (result, status) => {
+        if (status !== maps.services.Status.OK) return;
+        const exit = result.find((p) => p.place_name.includes(STATION_EXIT.mustInclude));
+        if (!exit) return;
+
+        const exitPos = new maps.LatLng(Number(exit.y), Number(exit.x));
+        new maps.CustomOverlay({
+          position: exitPos,
+          content: mapLabel(STATION_EXIT.label, "station"),
+          map,
+          yAnchor: 0.5,
+        });
+
+        const bounds = new maps.LatLngBounds();
+        bounds.extend(center);
+        bounds.extend(exitPos);
+        // 예식장 이름표가 핀 위로 솟아 있어서 위쪽 여백을 넉넉히 둔다
+        map.setBounds(bounds, 80, 40, 40, 40);
+      },
+      { location: center, radius: 1000 }
+    );
+  }, [coords, data.name]);
 
   async function copyAddress() {
     const ok = await copyText(data.address);
